@@ -1,182 +1,453 @@
 "use client";
 
+import * as React from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import {
-  Network, ArrowRight, Crown, Search, ShieldAlert, CreditCard, PenTool,
-  GitBranch, Eye, Sparkles, Users, ArrowDown,
-} from "lucide-react";
-import { SiteNav } from "@/components/site-nav";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-
-const fade = {
-  hidden: { opacity: 0, y: 16 },
-  show: (i = 0) => ({ opacity: 1, y: 0, transition: { delay: i * 0.07, duration: 0.5 } }),
-};
+import { SiteNav, BrandMark } from "@/components/site-nav";
 
 export default function Landing() {
   return (
     <>
       <SiteNav />
 
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 grid-bg opacity-40" />
-        <div className="relative mx-auto max-w-6xl px-4 pt-20 pb-16 text-center">
-          <motion.div initial="hidden" animate="show" variants={fade}>
-            <Badge tone="violet" className="mx-auto mb-6">
-              <Sparkles className="h-3 w-3" /> Best A2A Coordination · Best Agent · Venice AI
-            </Badge>
-          </motion.div>
-          <motion.h1 custom={1} initial="hidden" animate="show" variants={fade}
-            className="mx-auto max-w-3xl text-4xl font-semibold leading-tight tracking-tight text-ink sm:text-6xl">
-            Define the authority
-            <br />
-            <span className="bg-gradient-to-r from-brand to-brand-2 bg-clip-text text-transparent">of every agent.</span>
-          </motion.h1>
-          <motion.p custom={2} initial="hidden" animate="show" variants={fade}
-            className="mx-auto mt-6 max-w-2xl text-lg text-muted">
-            Charter is a coordination layer where a manager agent assigns scoped authority to specialist agents
-            through <span className="text-ink">redelegated</span> ERC-7710 permissions. Every agent acts under a charter —
-            and only receives the authority its role requires.
-          </motion.p>
-          <motion.div custom={3} initial="hidden" animate="show" variants={fade} className="mt-9 flex items-center justify-center gap-3">
-            <Link href="/dashboard"><Button size="lg">Launch the demo <ArrowRight className="h-4 w-4" /></Button></Link>
-            <Link href="#how"><Button size="lg" variant="secondary">How it works</Button></Link>
-          </motion.div>
+      {/* ============================ HERO ============================ */}
+      <header className="hero">
+        <div className="wrap hero-grid">
+          <div className="hero-copy">
+            <div className="kicker">Now in preview</div>
+            <div className="announce">
+              <div className="a-title">Charter Mission Control — agents that earn permission, on-chain</div>
+              <div className="a-sub"><b>Launch the demo →</b>&nbsp; Define a mission, then watch the chain sign itself.</div>
+            </div>
+            <h1 className="hero-h">Missions with<br />accountable agents</h1>
+            <p className="hero-sub">Charter is the mission-control framework for AI agents that delegate permission and pay on-chain — every action scoped, signed, and auditable.</p>
+            <div className="hero-cta">
+              <CopyCmd />
+              <Link className="demo-link" href="/dashboard">Launch the demo
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M7 17 17 7M9 7h8v8" /></svg>
+              </Link>
+            </div>
+          </div>
 
-          <motion.div custom={4} initial="hidden" animate="show" variants={fade} className="mx-auto mt-14 max-w-md">
-            <ChainPreview />
-          </motion.div>
+          <div className="hero-graphic">
+            <div className="hero-orbit"><div className="hero-blob" /></div>
+            <HeroNode color="#5b9dff" glyph={<><circle cx="12" cy="8" r="3.4" /><path d="M5 20c0-3.3 3-6 7-6s7 2.7 7 6" /></>} label="User" top="8%" left="50%" />
+            <HeroNode color="#00e599" glyph={<path d="M12 3c1.3 1.7 2.7 2.3 4.7 2.5-.2 2 .4 3.4 2 4.7-1.6 1.3-2.2 2.7-2 4.7-2 .2-3.4.8-4.7 2.5-1.3-1.7-2.7-2.3-4.7-2.5.2-2-.4-3.4-2-4.7 1.6-1.3 2.2-2.7 2-4.7 2-.2 3.4-.8 4.7-2.5Z" />} label="Manager" top="50%" left="10%" />
+            <HeroNode color="#ffb347" glyph={<><circle cx="12" cy="12" r="8" /><path d="M12 8v8M9.5 10c0-1 1.1-1.6 2.5-1.6S14.5 9 14.5 10" /></>} label="Payment" top="50%" left="90%" />
+            <HeroNode color="#a78bfa" glyph={<><circle cx="11" cy="11" r="6" /><path d="M20 20l-4-4" /></>} label="Research" top="88%" left="32%" />
+            <HeroNode color="#f472b6" glyph={<><path d="M3 17 14 6l4 4L7 21H3v-4Z" /><path d="M14 6l3-3 4 4-3 3" /></>} label="Writer" top="88%" left="68%" />
+          </div>
         </div>
-      </section>
 
-      <Section id="problem" title="Single agents aren't enough" kicker="The problem">
-        <div className="grid gap-4 sm:grid-cols-3">
-          <Feature icon={Users} title="Real workflows need teams" desc="One agent plans, one researches, one evaluates risk, one pays, one writes. Coordination is unavoidable." />
-          <Feature icon={ShieldAlert} title="But not full access" desc="You can't hand every agent your wallet. The hard problem isn't talking — it's authority." />
-          <Feature icon={GitBranch} title="Authority must be scoped" desc="Each agent should receive only the permission its role needs — and it should be visible and auditable." />
+        <div className="wrap cloud">
+          <div className="cloud-h">Built on open standards for agentic payments</div>
+          <div className="cloud-row">
+            <div className="logo-item"><span className="wm mono">ERC-7710</span><span className="rs">Delegation</span></div>
+            <div className="logo-item"><span className="wm mono">x402</span><span className="rs">Payments</span></div>
+            <div className="logo-item"><span className="wm">Base</span><span className="rs">Settlement</span></div>
+            <div className="logo-item"><span className="wm">Venice</span><span className="rs">Inference</span></div>
+            <div className="logo-item"><span className="wm">MetaMask</span><span className="rs">Toolkit</span></div>
+            <div className="logo-item"><span className="wm mono">viem</span><span className="rs">On-chain</span></div>
+          </div>
         </div>
-      </Section>
+      </header>
 
-      <Section id="how" title="How Charter works" kicker="Redelegated authority">
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <Feature icon={Crown} title="1 · Grant the Manager" desc="The user signs a root ERC-7710 delegation to the Manager Agent for the whole mission budget." />
-          <Feature icon={GitBranch} title="2 · Redelegate" desc="The Manager redelegates a smaller scoped permission to the Payment Agent — never the full authority." />
-          <Feature icon={ShieldAlert} title="3 · Coordinate" desc="Research finds data, Risk approves, Manager authorizes — all as visible agent-to-agent messages." />
-          <Feature icon={CreditCard} title="4 · Execute & audit" desc="The Payment Agent redeems the chain to pay. The permission chain and timeline stay fully auditable." />
-        </div>
-      </Section>
+      {/* ============================ BUILD ============================ */}
+      <section className="feat" id="build">
+        <div className="wrap">
+          <div className="panel intro-panel">
+            <div className="pill"><span className="pd" />Mission Builder</div>
+            <div className="intro-art">
+              <div className="spec mono" style={{ position: "absolute", left: 0, top: 0, fontFamily: "'JetBrains Mono',monospace", fontSize: 13.5, lineHeight: 2.05, color: "var(--ink-3)" }}>
+                <SpecLine k="Mission created" /><br />
+                <SpecLine k="Roles to assign" v="Manager, Worker, Payer" /><br />
+                <SpecLine k="Permission model" v="ERC-7710" /><br />
+                <SpecLine k="Budget cap" v="25 USDC" />
+              </div>
+            </div>
+            <h2 className="feat-h">Build your mission</h2>
+            <p className="feat-sub">Missions. Roles. Budgets. Permissions. Charter takes you from a one-line goal to a running, signed agent team.</p>
+          </div>
 
-      <Section id="team" title="The agent team" kicker="Every agent under a charter">
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
-          <RoleMini icon={Crown} role="Manager" cap="redelegates" />
-          <RoleMini icon={Search} role="Research" cap="read-only" />
-          <RoleMini icon={ShieldAlert} role="Risk" cap="approve / reject" />
-          <RoleMini icon={CreditCard} role="Payment" cap="spend ≤ limit" />
-          <RoleMini icon={PenTool} role="Writer" cap="report only" />
-        </div>
-      </Section>
+          <IconTabs />
 
-      <Section id="tracks" title="Built for the tracks" kicker="Where Charter qualifies">
-        <div className="grid gap-4 sm:grid-cols-2">
-          <Track tone="violet" title="Best A2A Coordination" points={["Redelegation is the center of the product", "Visible, auditable permission chain", "MetaMask Smart Accounts Kit in the main flow"]} />
-          <Track tone="brand" title="Best Agent" points={["Five agents do real, distinct work", "Manager plans, Risk decides, Payment pays", "Writer produces a real report"]} />
-          <Track tone="good" title="Best use of Venice AI" points={["Manager planner", "Risk evaluator", "Writer report generator"]} />
-          <Track tone="warn" title="x402 + ERC-7710" points={["Payment Agent pays an x402 service", "Under redelegated authority", "On-chain redemption"]} />
-        </div>
-      </Section>
+          <div className="duo">
+            <div className="cardx">
+              <div className="code-wrap code mono">
+                <div className="ln"><span className="k">import</span> {"{ Mission }"} <span className="k">from</span> <span className="s">&quot;@charter/core&quot;</span>;</div>
+                <div className="ln">&nbsp;</div>
+                <div className="ln"><span className="k">const</span> mission = <span className="k">new</span> <span className="f">Mission</span>({"{"}</div>
+                <div className="ln">&nbsp;&nbsp;id: <span className="s">&quot;token-risk-report&quot;</span>,</div>
+                <div className="ln">&nbsp;&nbsp;goal: <span className="s">&quot;Risk-score a token, pay if needed&quot;</span>,</div>
+                <div className="ln">&nbsp;&nbsp;budget: <span className="s">&quot;5 USDC&quot;</span>,</div>
+                <div className="ln">&nbsp;&nbsp;roles: [<span className="s">&quot;manager&quot;</span>, <span className="s">&quot;research&quot;</span>, <span className="s">&quot;risk&quot;</span>, <span className="s">&quot;payment&quot;</span>],</div>
+                <div className="ln">&nbsp;&nbsp;permission: <span className="f">erc7710</span>({"{"} revocable: <span className="k">true</span> {"}"}),</div>
+                <div className="ln">{"});"}</div>
+              </div>
+              <div className="foot">
+                <h3>Compose a mission in code</h3>
+                <p className="meta">Set the goal, budget, duration, and roles — Charter wires the rest.</p>
+              </div>
+            </div>
 
-      <section className="mx-auto max-w-6xl px-4 py-20">
-        <div className="relative overflow-hidden rounded-3xl border border-border bg-gradient-to-b from-surface-2 to-surface p-10 text-center">
-          <div className="absolute inset-0 grid-bg opacity-30" />
-          <div className="relative">
-            <Network className="mx-auto h-10 w-10 text-brand" />
-            <h2 className="mt-4 text-2xl font-semibold text-ink sm:text-3xl">Charter controls how agents coordinate.</h2>
-            <p className="mx-auto mt-3 max-w-xl text-muted">Create a mission, watch the manager redelegate scoped authority, and inspect the full chain.</p>
-            <Link href="/dashboard" className="mt-7 inline-block"><Button size="lg">Open Mission Control <ArrowRight className="h-4 w-4" /></Button></Link>
+            <div className="cardx">
+              <div className="pcv">
+                <div className="pc-head">
+                  <span className="mono">PERMISSION CHAIN</span>
+                  <span className="pc-stat"><span className="d" />signed · on-chain</span>
+                </div>
+                <div className="pchain">
+                  <div className="pc-node" style={{ ["--nc" as string]: "var(--blue)" }}>
+                    <span className="av"><svg viewBox="0 0 24 24" strokeWidth={1.7}><circle cx="12" cy="8" r="3.4" /><path d="M5 20c0-3.3 3-6 7-6s7 2.7 7 6" /></svg></span>
+                    <span className="nm">User</span><span className="rl">owner</span>
+                  </div>
+                  <div className="pc-link"><span className="cap">5 USDC</span><span className="wire" /></div>
+                  <div className="pc-node" style={{ ["--nc" as string]: "var(--green)" }}>
+                    <span className="av"><svg viewBox="0 0 24 24" strokeWidth={1.7}><path d="M12 3c1 1.3 2 1.8 3.6 2-.1 1.5.3 2.6 1.5 3.6-1.2 1-1.6 2.1-1.5 3.6-1.6.2-2.6.7-3.6 2-1-1.3-2-1.8-3.6-2 .1-1.5-.3-2.6-1.5-3.6 1.2-1 1.6-2.1 1.5-3.6 1.6-.2 2.6-.7 3.6-2Z" /></svg></span>
+                    <span className="nm">Manager</span><span className="rl">approve</span>
+                  </div>
+                  <div className="pc-link"><span className="cap">≤ 1</span><span className="wire" /></div>
+                  <div className="pc-node" style={{ ["--nc" as string]: "var(--amber)" }}>
+                    <span className="av"><svg viewBox="0 0 24 24" strokeWidth={1.7}><circle cx="12" cy="12" r="8" /><path d="M12 8v8M9.5 10c0-1 1.1-1.6 2.5-1.6S14.5 9 14.5 10" /></svg></span>
+                    <span className="nm">Payment</span><span className="rl">spend</span>
+                  </div>
+                </div>
+                <div className="pc-foot">
+                  <span className="badge green"><svg className="bi" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4}><path d="M5 12l5 5L20 7" /></svg>ERC-7710 signed</span>
+                  <span className="badge violet">redelegation</span>
+                  <span className="badge neutral">explorer ↗</span>
+                </div>
+              </div>
+              <div className="foot">
+                <h3>Watch the permission chain</h3>
+                <p className="meta">User → Manager → Payment, each link signed and budget-scoped.</p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      <footer className="border-t border-border py-8 text-center text-xs text-faint">
-        Charter · Redelegated authority for agent teams · MetaMask Smart Accounts + ERC-7710 + Venice AI
+      {/* ============================ OBSERVE ============================ */}
+      <section className="feat" id="observe">
+        <div className="wrap">
+          <div className="panel intro-panel" style={{ minHeight: 320 }}>
+            <div className="pill"><span className="pd" />Observability</div>
+            <h2 className="feat-h">Observe every step</h2>
+            <p className="feat-sub">Trace the conversation. Replay the spend. See exactly what your agents did, when, and for how much — until you trust them with production.</p>
+          </div>
+
+          <div className="bento">
+            <div className="col">
+              <div className="bcell">
+                <h4>A2A Console</h4>
+                <p className="meta">Inter-agent messages, live — instruct, request, approve, execute, report.</p>
+                <div className="chart">
+                  <svg viewBox="0 0 520 170" preserveAspectRatio="none">
+                    <polyline points="0,150 60,150 60,135 120,135 120,118 180,118 180,128 240,128 240,98 300,98 300,80 360,80 360,55 420,55 420,38 510,38" stroke="#00e599" strokeWidth={2.4} fill="none" />
+                    <polyline points="0,160 70,160 70,148 140,148 140,140 210,140 210,150 280,150 280,122 350,122 350,105 420,105 420,75 510,68" stroke="#ff7a45" strokeWidth={2.4} fill="none" />
+                    <circle cx="510" cy="38" r="4.5" fill="#00e599" /><circle cx="510" cy="68" r="4.5" fill="#ff7a45" />
+                  </svg>
+                  <div className="legend">
+                    <div className="ttl">market-scan</div>
+                    <div className="row"><span className="nm"><span className="sw" style={{ background: "#00e599" }} />Approvals</span><span className="v" style={{ color: "#00e599" }}>14</span></div>
+                    <div className="row"><span className="nm"><span className="sw" style={{ background: "#ff7a45" }} />Spend·USDC</span><span className="v" style={{ color: "#ff7a45" }}>5.8</span></div>
+                  </div>
+                </div>
+                <h4 style={{ marginTop: 14 }}>Replay agent conversations</h4>
+                <p className="meta">Every instruct / approve / execute, timestamped.</p>
+              </div>
+              <div className="bcell trace">
+                <h4 style={{ marginBottom: 14 }}>Built-in timeline</h4>
+                <TraceRow label="Token-risk mission" w="100%" ms="5.53 s" />
+                <TraceRow label="Sign delegation" w="62%" ms="2.86 s" indent />
+                <TraceRow label="Assign agents" w="12%" ms="0.14 s" indent2 />
+                <TraceRow label="Risk evaluation" w="30%" ms="0.30 s" indent2 />
+                <TraceRow label="x402 settle" w="22%" ms="0.21 s" indent2 />
+              </div>
+            </div>
+
+            <div className="col">
+              <SmallCell title="Risk scoring" body="Score every mission's output with model-graded, rule-based, and on-chain checks before funds move."
+                icon={<path d="M12 3v18M5 7l7-2 7 2M5 7l-2 6a4 4 0 0 0 8 0L9 7M19 7l-2 6a4 4 0 0 0 8 0l-2-6" />} />
+              <SmallCell title="Human-in-the-loop" body="Hold any step for approval, sanitize inputs, and block prompt-injection before an agent acts."
+                icon={<path d="M12 11V4a2 2 0 1 1 4 0v7M8 11V7a2 2 0 1 1 4 0v4M16 11a2 2 0 1 1 4 0v3a7 7 0 0 1-7 7h-1a6 6 0 0 1-6-6v-1l-1.5-2a1.6 1.6 0 0 1 2.5-2L8 12" />} />
+              <SmallCell title="Final Report" body="A Venice-written summary with risk level, total cost, txHash, and an on-chain / simulated badge."
+                icon={<><path d="M6 3h9l4 4v14H6V3Z" /><path d="M14 3v4h4M9 12h6M9 16h6" /></>} />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ============================ SETTLE ============================ */}
+      <section className="feat">
+        <div className="wrap">
+          <div className="panel intro-panel" style={{ minHeight: 300 }}>
+            <div className="pill"><span className="pd" />Payments</div>
+            <h2 className="feat-h">Settle on-chain</h2>
+            <p className="feat-sub">Agents pay through x402 and settle on Base. Every transfer is budget-bounded, signed, and visible on the explorer — or run it simulated until you&apos;re ready.</p>
+          </div>
+
+          <div className="duo" style={{ marginTop: 24 }}>
+            <div className="cardx">
+              <div className="pledger">
+                <div className="pl-top">
+                  <div className="pl-titles">
+                    <span className="pl-kicker">Payment Ledger</span>
+                    <span className="pl-mission"><span className="md" />token-risk</span>
+                  </div>
+                  <span className="pl-audit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7}><path d="M12 3l8 3v6c0 4-3 7-8 9-5-2-8-5-8-9V6l8-3Z" /><path d="M9 12l2 2 4-4" /></svg>Auditable</span>
+                </div>
+                <div className="pl-meter">
+                  <div className="pl-meter-head">
+                    <span className="pl-mh-k">Spent this mission</span>
+                    <span className="pl-mh-v"><b>1.00</b> / 5 USDC</span>
+                  </div>
+                  <div className="pl-bar"><i className="seg green" style={{ width: "16%" }} /><i className="seg amber" style={{ width: "4%" }} /></div>
+                  <div className="pl-legend">
+                    <span><span className="d green" />0.80 settled</span>
+                    <span><span className="d amber" />0.20 pending</span>
+                    <span className="right">4.00 headroom</span>
+                  </div>
+                </div>
+                <div className="pl-rows">
+                  <PlRow color="var(--blue)" name="Data API · x402" who="Research agent" hx="0xc8b7…83f4" amt="0.80" status="settled"
+                    icon={<path d="M13 3 4 14h6l-1 7 9-11h-6l1-7Z" />} />
+                  <PlRow color="var(--amber)" name="Compute · Venice" who="Manager agent" hx="simulated" amt="0.20" status="pending"
+                    icon={<path d="M12 3l2.2 5.5L20 9l-4.2 3.6L17 18l-5-3-5 3 1.2-5.4L4 9l5.8-.5L12 3Z" />} />
+                </div>
+              </div>
+              <div className="foot">
+                <h3>Track every transfer</h3>
+                <p className="meta">A live ledger of what each agent spent, with txHash and status.</p>
+              </div>
+            </div>
+
+            <div className="cardx">
+              <div className="modeflow">
+                <span className="mf-cap">On-chain · Base</span>
+                <span className="mf-pill" style={{ ["--c" as string]: "var(--green)" }}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4}><path d="M5 12l5 5L20 7" /></svg>signed</span>
+                <span className="mf-wire top" />
+                <span className="mf-core"><svg viewBox="0 0 48 48"><path d="M24 5c2 2.6 4 3.4 7 3.7-.3 3 .6 5 3 7-2.4 2-3.3 4-3 7-3 .3-5 1.1-7 3.7-2-2.6-4-3.4-7-3.7.3-3-.6-5-3-7 2.4-2 3.3-4 3-7 3-.3 5-1.1 7-3.7Z" /></svg></span>
+                <span className="mf-wire bot" />
+                <span className="mf-pill" style={{ ["--c" as string]: "var(--amber)" }}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7}><path d="M4 7h16v10H4zM4 11h16" /></svg>dry-run</span>
+                <span className="mf-cap">Simulated · local</span>
+                <Link href="/dashboard" className="btn btn-green" style={{ marginTop: 24 }}><span style={{ width: 7, height: 7, borderRadius: "50%", background: "#04130d" }} />Run mission</Link>
+              </div>
+              <div className="foot">
+                <h3>Signed or simulated</h3>
+                <p className="meta">Flip a mission between a real on-chain run and a safe dry-run.</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="inline-cta">
+            Start your first mission with
+            <Link className="ip" href="/dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8}><path d="M4 5h16v14H4zM4 9h16" /></svg>Mission Control</Link>
+            inspect the
+            <Link className="ip" href="/#observe"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8}><path d="M5 4h11l3 3v13H5z" /></svg>permission chain</Link>
+            and ship with our
+            <b>agent mission platform.</b>
+          </div>
+
+          <div className="templates">
+            <Template tone="#0b1a14" title="Token Risk Report" meta="Risk-score a token and pay for data only if needed."
+              chips={[{ ic: <><circle cx="11" cy="11" r="6" /><path d="M20 20l-4-4" /></>, t: "research" }, { ic: <path d="M12 3l8 3v6c0 4-3 7-8 9-5-2-8-5-8-9V6l8-3Z" />, t: "risk gate" }]} />
+            <Template tone="#1a130b" title="Procurement Agent" meta="Source vendors and pay a deposit within budget."
+              chips={[{ ic: <path d="M4 18l5-6 4 4 7-9" />, t: "source" }, { ic: <><circle cx="12" cy="12" r="8" /><path d="M12 4v8h8" /></>, t: "pay deposit" }]} />
+            <Template tone="#0b121f" title="Ledger Query" meta="Ask questions about your settlements in plain language."
+              chips={[{ ic: <path d="M5 7h14M5 12h14M5 17h9" />, t: "query on-chain" }]} />
+          </div>
+
+          <div className="faq" id="faq">
+            <div className="faq-h">Frequently asked questions</div>
+            <div className="faq-list">
+              {FAQS.map((f, i) => <FaqItem key={i} q={f.q} a={f.a} defaultOpen={i === 0} />)}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ============================ CTA + FOOTER ============================ */}
+      <div className="bigcta">
+        <div className="wrap">
+          <h2>Ship missions you trust</h2>
+          <div className="row">
+            <Link className="btn btn-ghost" href="/dashboard">Get Started</Link>
+            <Link className="btn btn-ghost" href="/#faq">Documentation</Link>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div className="wrap" style={{ padding: 0 }}>
+          <div className="footer-shell">
+            <div className="footer-glow" />
+            <div className="footer-inner">
+              <div className="f-top">
+                <Link className="brand" href="/"><BrandMark />charter</Link>
+                <div className="f-news">
+                  <div className="nh"><span className="pd" />Get weekly updates</div>
+                  <form className="sub-form" onSubmit={(e) => e.preventDefault()}>
+                    <input type="email" placeholder="you@company.com" aria-label="Email" />
+                    <button className="btn btn-light" type="submit">Subscribe</button>
+                  </form>
+                </div>
+              </div>
+              <div className="f-cols">
+                <div className="f-col"><h5>Framework</h5><Link href="/#build">Missions</Link><Link href="/#build">Permission Chain</Link><Link href="/dashboard">Agent Team</Link><Link href="/#observe">Payments</Link></div>
+                <div className="f-col"><h5>Product</h5><Link href="/dashboard">Mission Control</Link><Link href="/dashboard">A2A Console</Link><Link href="/dashboard">Timeline</Link><Link href="/dashboard">Reports</Link></div>
+                <div className="f-col"><h5>Developers</h5><Link href="/#faq">Docs</Link><Link href="/#build">SDK</Link><Link href="/#observe">Observability</Link><Link href="/dashboard">Templates</Link></div>
+                <div className="f-col"><h5>Standards</h5><a href="https://eips.ethereum.org/EIPS/eip-7710" target="_blank" rel="noreferrer">ERC-7710</a><a href="https://x402.org" target="_blank" rel="noreferrer">x402</a><a href="https://base.org" target="_blank" rel="noreferrer">Base</a><a href="https://venice.ai" target="_blank" rel="noreferrer">Venice</a></div>
+                <div className="f-col"><h5>Company</h5><Link href="/">About</Link><Link href="/">Careers</Link><Link href="/">Contact</Link><Link href="/">Brand</Link></div>
+                <div className="f-col"><h5>Connect</h5><a href="https://github.com/Im-A-Nuel/charter" target="_blank" rel="noreferrer">GitHub</a><a href="#">Discord</a><a href="#">X (Twitter)</a><a href="#">YouTube</a></div>
+              </div>
+              <div className="f-bottom">
+                <div className="f-status">
+                  <div className="st sec"><span className="pd" />SECURITY</div>
+                  <div className="st ok"><span className="pd" />ALL SYSTEMS OPERATIONAL</div>
+                </div>
+                <div className="f-legal"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">llms.txt</a></div>
+              </div>
+            </div>
+          </div>
+        </div>
       </footer>
     </>
   );
 }
 
-function ChainPreview() {
-  const nodes = [
-    { label: "User Wallet", budget: "5 USDC", tone: "neutral" as const },
-    { label: "Manager Agent", budget: "5 USDC", tone: "brand" as const },
-    { label: "Payment Agent", budget: "1 USDC", tone: "violet" as const },
-  ];
+/* ---------------------------------------------------------------- helpers */
+
+function HeroNode({ color, glyph, label, top, left }: { color: string; glyph: React.ReactNode; label: string; top: string; left: string }) {
   return (
-    <div className="rounded-2xl border border-border bg-surface/70 p-4">
-      {nodes.map((n, i) => (
-        <div key={n.label}>
-          <div className={`flex items-center justify-between rounded-xl border p-3 ${
-            n.tone === "violet" ? "border-brand-2/40 bg-brand-2/10" : n.tone === "brand" ? "border-brand/40 bg-brand/10" : "border-border bg-surface-2"
-          }`}>
-            <span className="text-sm text-ink">{n.label}</span>
-            <Badge tone={n.tone === "violet" ? "violet" : n.tone === "brand" ? "brand" : "neutral"}>{n.budget}</Badge>
-          </div>
-          {i < nodes.length - 1 && (
-            <div className="flex items-center justify-center gap-2 py-1 text-[11px] text-faint">
-              <ArrowDown className="h-3 w-3" /> {i === 0 ? "delegation" : "redelegation"}
-            </div>
-          )}
-        </div>
+    <div className="hero-node" style={{ ["--nc" as string]: color, top, left }}>
+      <div className="ring"><svg viewBox="0 0 24 24" fill="none" strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round">{glyph}</svg></div>
+      <div className="lbl">{label}</div>
+    </div>
+  );
+}
+
+function CopyCmd() {
+  const [copied, setCopied] = React.useState(false);
+  const cmd = "npm create charter@latest";
+  return (
+    <div className="cmd mono">
+      <span><span className="prompt">$</span>&nbsp; {cmd}</span>
+      <span className="copy" title="Copy" onClick={() => { navigator.clipboard?.writeText(cmd); setCopied(true); setTimeout(() => setCopied(false), 1400); }}>
+        {copied ? (
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" strokeWidth={2.2}><path d="M5 12l5 5L20 7" /></svg>
+        ) : (
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><rect x="9" y="9" width="11" height="11" rx="2" /><path d="M5 15V5a2 2 0 0 1 2-2h10" /></svg>
+        )}
+      </span>
+    </div>
+  );
+}
+
+function SpecLine({ k, v }: { k: string; v?: string }) {
+  return (
+    <>
+      <span style={{ color: "var(--ink)", marginRight: 8 }}>◆ {k}</span>
+      {v && <span style={{ color: "var(--green)" }}>&nbsp;{v}</span>}
+    </>
+  );
+}
+
+const TAB_ICONS: React.ReactNode[] = [
+  <path key="0" d="M12 3c1.3 1.7 2.7 2.3 4.7 2.5-.2 2 .4 3.4 2 4.7-1.6 1.3-2.2 2.7-2 4.7-2 .2-3.4.8-4.7 2.5-1.3-1.7-2.7-2.3-4.7-2.5.2-2-.4-3.4-2-4.7 1.6-1.3 2.2-2.7 2-4.7 2-.2 3.4-.8 4.7-2.5Z" />,
+  <path key="1" d="M9 11a3 3 0 0 1 3-3h1a3 3 0 0 1 0 6M15 13a3 3 0 0 1-3 3h-1a3 3 0 0 1 0-6" />,
+  <><circle key="2a" cx="7" cy="7" r="2" /><circle key="2b" cx="14" cy="7" r="2" /><circle key="2c" cx="7" cy="14" r="2" /><circle key="2d" cx="17" cy="17" r="2" /><path key="2e" d="M19 19l2 2" /></>,
+  <><path key="3a" d="M5 18V9a7 7 0 0 1 14 0v9M5 18h14" /><circle key="3b" cx="9" cy="13" r="1" /></>,
+  <path key="4" d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3Z" />,
+  <path key="5" d="M6 12c0-4 3-7 7-7s5 2 5 4-2 3-4 3-3 1-3 3 2 4 5 4" />,
+];
+
+function IconTabs() {
+  const [active, setActive] = React.useState(0);
+  return (
+    <div className="tabs">
+      {TAB_ICONS.map((ic, i) => (
+        <button key={i} type="button" className={`tab${active === i ? " active" : ""}`} onClick={() => setActive(i)}>
+          <svg viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.6} fill="none">{ic}</svg>
+        </button>
       ))}
     </div>
   );
 }
 
-function Section({ id, title, kicker, children }: { id: string; title: string; kicker: string; children: React.ReactNode }) {
+function TraceRow({ label, w, ms, indent, indent2 }: { label: string; w: string; ms: string; indent?: boolean; indent2?: boolean }) {
   return (
-    <section id={id} className="mx-auto max-w-6xl px-4 py-14">
-      <div className="mb-7">
-        <p className="text-xs font-medium uppercase tracking-wider text-brand">{kicker}</p>
-        <h2 className="mt-1 text-2xl font-semibold tracking-tight text-ink sm:text-3xl">{title}</h2>
-      </div>
-      {children}
-    </section>
-  );
-}
-
-function Feature({ icon: Icon, title, desc }: { icon: React.ElementType; title: string; desc: string }) {
-  return (
-    <motion.div initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-60px" }} transition={{ duration: 0.4 }}
-      className="rounded-2xl border border-border bg-surface/70 p-5">
-      <div className="grid h-9 w-9 place-items-center rounded-lg bg-surface-2 text-brand"><Icon className="h-4.5 w-4.5" /></div>
-      <h3 className="mt-3 font-medium text-ink">{title}</h3>
-      <p className="mt-1.5 text-sm text-muted">{desc}</p>
-    </motion.div>
-  );
-}
-
-function RoleMini({ icon: Icon, role, cap }: { icon: React.ElementType; role: string; cap: string }) {
-  return (
-    <div className="rounded-2xl border border-border bg-surface/70 p-4 text-center">
-      <div className="mx-auto grid h-10 w-10 place-items-center rounded-xl bg-surface-2 text-brand"><Icon className="h-5 w-5" /></div>
-      <div className="mt-2 text-sm font-medium text-ink">{role}</div>
-      <div className="text-[11px] text-faint">{cap}</div>
+    <div className="trow">
+      <span className={`tl${indent ? " indent" : ""}${indent2 ? " indent2" : ""}`}>
+        <svg viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h10" /></svg>{label}
+      </span>
+      <span className="bar-wrap"><div className="bar" style={{ width: w }} /><div className="ms">{ms}</div></span>
     </div>
   );
 }
 
-function Track({ title, points, tone }: { title: string; points: string[]; tone: "brand" | "violet" | "good" | "warn" }) {
+function SmallCell({ title, body, icon }: { title: string; body: string; icon: React.ReactNode }) {
   return (
-    <div className="rounded-2xl border border-border bg-surface/70 p-5">
-      <Badge tone={tone}>{title}</Badge>
-      <ul className="mt-3 space-y-2">
-        {points.map((p) => (
-          <li key={p} className="flex items-start gap-2 text-sm text-muted">
-            <Eye className="mt-0.5 h-4 w-4 shrink-0 text-faint" /> {p}
-          </li>
-        ))}
-      </ul>
+    <div className="bcell small">
+      <svg className="ic" viewBox="0 0 24 24" strokeWidth={1.6} fill="none" stroke="currentColor">{icon}</svg>
+      <h4>{title}</h4>
+      <p>{body}</p>
+    </div>
+  );
+}
+
+function PlRow({ color, name, who, hx, amt, status, icon }: { color: string; name: string; who: string; hx: string; amt: string; status: "settled" | "pending"; icon: React.ReactNode }) {
+  return (
+    <div className="pl-row">
+      <span className="pl-ic" style={{ ["--c" as string]: color }}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7}>{icon}</svg></span>
+      <span className="pl-meat">
+        <span className="pl-nm">{name}</span>
+        <span className="pl-sub">{who} <span className="dotsep">·</span> <span className="hx">{hx}</span></span>
+      </span>
+      <span className="pl-right">
+        <span className="pl-amt">{amt}<em>USDC</em></span>
+        {status === "settled" ? (
+          <span className="pl-badge green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4}><path d="M5 12l5 5L20 7" /></svg>settled</span>
+        ) : (
+          <span className="pl-badge amber"><span className="bd" />pending</span>
+        )}
+      </span>
+    </div>
+  );
+}
+
+function Template({ tone, title, meta, chips }: { tone: string; title: string; meta: string; chips: { ic: React.ReactNode; t: string }[] }) {
+  return (
+    <Link href="/dashboard" className="tpl">
+      <div className="thumb" style={{ background: `linear-gradient(150deg, ${tone}, #06100c)` }}>
+        <div className="chiprow">
+          {chips.map((c, i) => (
+            <span key={i} className="flowchip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8}>{c.ic}</svg>{c.t}</span>
+          ))}
+        </div>
+      </div>
+      <div className="tbody"><h4>{title}</h4><p className="meta">{meta}</p></div>
+    </Link>
+  );
+}
+
+const FAQS = [
+  { q: "What is Charter?", a: "Charter is a mission-control framework for autonomous AI agents. You define a mission with a goal and a budget, Charter assembles an agent team, and the agents coordinate, act, and pay — with every permission scoped and signed on-chain." },
+  { q: "What is a permission chain?", a: "A permission chain is the User → Manager → Payment delegation that lets agents act on your behalf. Each link carries a budget cap and is signed using ERC-7710, so authority is explicit, bounded, and revocable." },
+  { q: "What is ERC-7710?", a: "ERC-7710 is the delegation standard Charter uses to grant scoped, revocable permissions between accounts. A manager agent can redelegate a smaller budget to a payment agent without ever holding your keys." },
+  { q: "How do agents pay for things?", a: "Agents settle through the x402 payment protocol on Base. Every transfer is budget-bounded and recorded with a txHash, so you can audit exactly what was spent and where." },
+  { q: "What models does Charter use?", a: "Charter runs on Venice models for planning, risk evaluation, and report generation, and is model-agnostic at the framework level — bring your own provider for any role in the chain." },
+  { q: "Can I run a mission without spending real funds?", a: "Yes. Every mission can run in simulated mode — the full permission chain, A2A console, timeline, and report all work, with payments marked as simulated until you connect a wallet for a signed on-chain run." },
+];
+
+function FaqItem({ q, a, defaultOpen }: { q: string; a: string; defaultOpen?: boolean }) {
+  const [open, setOpen] = React.useState(!!defaultOpen);
+  return (
+    <div className={`qa${open ? " open" : ""}`}>
+      <button onClick={() => setOpen((o) => !o)}>
+        {q}
+        <svg className="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M9 6l6 6-6 6" /></svg>
+      </button>
+      <div className="ans"><p>{a}</p></div>
     </div>
   );
 }
