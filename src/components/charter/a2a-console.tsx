@@ -1,48 +1,64 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
-import { MessagesSquare, ArrowRight } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import * as React from "react";
 import { useStore } from "@/lib/store";
+import { vizFor, Glyph } from "@/lib/role-visuals";
 import type { AgentMessage } from "@/lib/types";
 
-const kindTone: Record<AgentMessage["kind"], "brand" | "violet" | "good" | "warn" | "neutral"> = {
-  instruct: "brand", request: "warn", approve: "good", execute: "violet", report: "neutral",
+const KC: Record<AgentMessage["kind"], string> = {
+  instruct: "#5b9dff",
+  request: "#a78bfa",
+  approve: "#00e599",
+  execute: "#ffb347",
+  report: "#f472b6",
 };
 
 export function A2AConsole({ missionId }: { missionId: string }) {
   const { messages } = useStore();
   const rows = messages.filter((m) => m.missionId === missionId);
+  const streamRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    const el = streamRef.current;
+    if (el) el.scrollTop = el.scrollHeight;
+  }, [rows.length]);
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2"><MessagesSquare className="h-4 w-4 text-brand" /> A2A Coordination Console</CardTitle>
-        <CardDescription>Live agent-to-agent messages.</CardDescription>
-      </CardHeader>
-      <CardContent>
-        {rows.length === 0 ? (
-          <p className="py-8 text-center text-sm text-faint">No messages yet. Run the mission.</p>
-        ) : (
-          <div className="space-y-2">
-            <AnimatePresence initial={false}>
-              {rows.map((m) => (
-                <motion.div key={m.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}
-                  className="rounded-xl border border-border bg-surface-2/40 p-3">
-                  <div className="mb-1 flex items-center gap-2 text-xs">
-                    <span className="font-medium text-ink">{m.from}</span>
-                    <ArrowRight className="h-3 w-3 text-faint" />
-                    <span className="font-medium text-ink">{m.to}</span>
-                    <Badge tone={kindTone[m.kind]} className="ml-auto">{m.kind}</Badge>
+    <section className="dpanel">
+      <div className="dp-h">
+        <div className="t">
+          <svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4V5Z" /><path d="M8 10h8M8 13h5" /></svg>
+          A2A Console
+        </div>
+        <span className="sub">{rows.length} messages</span>
+      </div>
+      <div className="dp-b">
+        <div className="a2a">
+          <div className="stream" ref={streamRef}>
+            {rows.length === 0 ? (
+              <div className="empty">No inter-agent traffic yet. Run the mission to watch agents coordinate.</div>
+            ) : (
+              rows.map((m) => {
+                const viz = vizFor(m.from);
+                return (
+                  <div key={m.id} className="msg" style={{ ["--mc2" as string]: viz.color, ["--kc" as string]: KC[m.kind] }}>
+                    <div className="mav"><Glyph name={viz.glyph} /></div>
+                    <div className="mb">
+                      <div className="mhead">
+                        <span className="from" style={{ color: viz.color }}>{m.from}</span>
+                        <span className="arr">→</span>
+                        <span className="to">{m.to}</span>
+                        <span className="kind">{m.kind}</span>
+                      </div>
+                      <div className="text">{m.message}</div>
+                    </div>
                   </div>
-                  <p className="text-sm text-muted">{m.message}</p>
-                </motion.div>
-              ))}
-            </AnimatePresence>
+                );
+              })
+            )}
           </div>
-        )}
-      </CardContent>
-    </Card>
+        </div>
+      </div>
+    </section>
   );
 }

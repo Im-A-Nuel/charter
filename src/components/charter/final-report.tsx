@@ -1,66 +1,66 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { FileText, Sparkles, Link2, ShieldCheck, CreditCard } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { useStore } from "@/lib/store";
 import { explorerTx } from "@/lib/chain";
 
 export function FinalReport({ missionId }: { missionId: string }) {
   const { reports } = useStore();
   const report = reports.find((r) => r.missionId === missionId);
-  if (!report) return null;
-
-  const riskTone = report.riskLevel === "High" ? "bad" : report.riskLevel === "Medium" ? "warn" : "good";
+  const onChain = report?.execMode === "real";
 
   return (
-    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
-      <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle className="flex items-center gap-2"><FileText className="h-4 w-4 text-brand" /> Final Report</CardTitle>
-            <Badge tone="violet"><Sparkles className="h-3 w-3" /> {report.veniceModel}</Badge>
+    <section className="dpanel report">
+      <div className="dp-h">
+        <div className="t">
+          <svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6V3Z" /><path d="M14 3v4h4M9 12h6M9 16h6" /></svg>
+          Final Report
+        </div>
+        <span className="sub">{!report ? "pending" : onChain ? "on-chain" : "simulated"}</span>
+      </div>
+      <div className="dp-b">
+        {!report ? (
+          <div className="locked">
+            <svg viewBox="0 0 24 24" fill="none" strokeWidth={1.7}><rect x="5" y="11" width="14" height="9" rx="2" /><path d="M8 11V8a4 4 0 0 1 8 0v3" /></svg>
+            <div className="t">Report locked</div>
+            <div className="s">A Venice-written summary appears when the mission completes.</div>
           </div>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-            <Stat label="Risk level"><Badge tone={riskTone}>{report.riskLevel}</Badge></Stat>
-            <Stat label="Paid data"><span className="text-ink">{report.paidDataUsed ? "Yes" : "No"}</span></Stat>
-            <Stat label="Total spent"><span className="text-ink">{report.totalSpent} USDC</span></Stat>
-            <Stat label="Remaining"><span className="text-ink">{report.remaining} USDC</span></Stat>
-          </div>
+        ) : (
+          <div>
+            <div className={`rep-verdict${report.riskLevel === "Low" ? "" : " warn"}`}>
+              <div className="rico">
+                <svg viewBox="0 0 24 24" fill="none" strokeWidth={1.8}><path d="M9 12l2 2 4-4M5 7l7-4 7 4v6c0 4-3 7-7 8-4-1-7-4-7-8V7Z" /></svg>
+              </div>
+              <div>
+                <div className="rt">Risk · {report.riskLevel}</div>
+                <div className="rs">{report.paidDataUsed ? "All actions stayed inside the signed budget." : "No payment was required for this mission."}</div>
+              </div>
+            </div>
 
-          <div className="flex flex-wrap gap-2 text-xs">
-            <span className="inline-flex items-center gap-1 rounded-lg border border-border bg-surface-2/50 px-2.5 py-1 text-muted">
-              <ShieldCheck className="h-3.5 w-3.5 text-good" /> Approved by {report.approvedBy}
-            </span>
-            <span className="inline-flex items-center gap-1 rounded-lg border border-border bg-surface-2/50 px-2.5 py-1 text-muted">
-              <CreditCard className="h-3.5 w-3.5 text-brand" /> Paid by {report.paymentBy}
-            </span>
-            {report.txHash && (
-              <a href={explorerTx(report.txHash)} target="_blank" rel="noreferrer"
-                className="inline-flex items-center gap-1 rounded-lg border border-border bg-surface-2/50 px-2.5 py-1 text-brand hover:underline">
-                tx {report.txHash.slice(0, 10)}… <Link2 className="h-3 w-3" />
-                <Badge tone={report.execMode === "real" ? "good" : "neutral"}>{report.execMode}</Badge>
-              </a>
-            )}
-          </div>
+            <div className="rep-stats">
+              <div className="rep-stat"><div className="k">Total spent</div><div className="v green">{report.totalSpent} USDC</div></div>
+              <div className="rep-stat"><div className="k">Remaining</div><div className="v">{report.remaining} USDC</div></div>
+              <div className="rep-stat"><div className="k">Approved by</div><div className="v" style={{ fontSize: 15 }}>{report.approvedBy}</div></div>
+              <div className="rep-stat"><div className="k">Settlement</div><div className="v" style={{ fontSize: 15 }}>{onChain ? "Base" : "dry-run"}</div></div>
+            </div>
 
-          <div className="whitespace-pre-wrap rounded-xl border border-border bg-gradient-to-b from-surface-2/60 to-surface/60 p-5 text-sm leading-relaxed text-muted">
-            {report.body}
-          </div>
-        </CardContent>
-      </Card>
-    </motion.div>
-  );
-}
+            <div className="rep-summary">
+              <span className="q">Venice summary · {report.veniceModel}</span>
+              {report.body}
+            </div>
 
-function Stat({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
-    <div className="rounded-lg border border-border bg-surface-2/40 p-3">
-      <div className="text-[11px] text-faint">{label}</div>
-      <div className="mt-1">{children}</div>
-    </div>
+            <div className="rep-foot">
+              <span className={`badge ${onChain ? "green" : "amber"}`}>
+                <span className="bd" />{onChain ? "On-chain · Base" : "Simulated run"}
+              </span>
+              {report.txHash && (
+                <span className="tx">
+                  txHash <a href={explorerTx(report.txHash)} target="_blank" rel="noreferrer">{report.txHash.slice(0, 12)}… ↗</a>
+                </span>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+    </section>
   );
 }

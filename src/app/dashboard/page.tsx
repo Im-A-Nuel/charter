@@ -1,8 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { motion } from "framer-motion";
-import { Plus, Inbox, Play, Loader2, Sparkles } from "lucide-react";
 import { SiteNav } from "@/components/site-nav";
 import { MissionBuilder } from "@/components/charter/mission-builder";
 import { AgentTeam } from "@/components/charter/agent-team";
@@ -10,17 +8,19 @@ import { PermissionChain } from "@/components/charter/permission-chain";
 import { Timeline } from "@/components/charter/timeline";
 import { A2AConsole } from "@/components/charter/a2a-console";
 import { FinalReport } from "@/components/charter/final-report";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { useStore } from "@/lib/store";
-import { useWallet } from "@/lib/wallet";
-import { useMissionRunner } from "@/lib/orchestrator";
-import { shortAddr } from "@/lib/utils";
+import { useMissionRunner, type Phase } from "@/lib/orchestrator";
 import type { Mission } from "@/lib/types";
+
+function phaseGroup(phase: Phase): "idle" | "running" | "done" | "rejected" {
+  if (phase === "done") return "done";
+  if (phase === "rejected") return "rejected";
+  if (phase === "idle") return "idle";
+  return "running";
+}
 
 export default function Dashboard() {
   const { missions, charters, ready } = useStore();
-  const { account } = useWallet();
   const [selected, setSelected] = React.useState<string | null>(null);
   const [showBuilder, setShowBuilder] = React.useState(false);
 
@@ -33,84 +33,80 @@ export default function Dashboard() {
   return (
     <>
       <SiteNav />
-      <main className="mx-auto max-w-6xl px-4 py-8">
-        <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
-          <div>
-            <h1 className="text-2xl font-semibold tracking-tight text-ink">Mission Control</h1>
-            <p className="text-sm text-muted">Coordinate an agent team through redelegated authority.</p>
-          </div>
-          <div className="flex items-center gap-2">
-            {account && <Badge tone="neutral">User {shortAddr(account)}</Badge>}
-            <Button size="sm" variant={showBuilder ? "secondary" : "primary"} onClick={() => setShowBuilder((s) => !s)}>
-              <Plus className="h-4 w-4" /> New mission
-            </Button>
-          </div>
-        </div>
-
-        {showBuilder && (
-          <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-            <MissionBuilder onCreated={(id) => { setSelected(id); setShowBuilder(false); }} />
-          </motion.div>
-        )}
-
+      <main className="mc">
         {missions.length > 0 && (
-          <div className="mb-6 flex flex-wrap gap-2">
+          <div className="mtabs">
             {missions.map((m) => (
-              <button key={m.id} onClick={() => setSelected(m.id)}
-                className={`rounded-lg border px-3 py-1.5 text-sm transition-colors ${
-                  active?.id === m.id ? "border-brand/50 bg-brand/10 text-ink" : "border-border bg-surface-2 text-muted hover:text-ink"
-                }`}>
+              <button key={m.id} onClick={() => setSelected(m.id)} className={`mtab${active?.id === m.id ? " on" : ""}`}>
                 {m.name} · {m.budget} USDC
               </button>
             ))}
+            <button className="mtab" onClick={() => setShowBuilder((s) => !s)}>+ New mission</button>
           </div>
         )}
 
+        {showBuilder && (
+          <MissionBuilder onCreated={(id) => { setSelected(id); setShowBuilder(false); }} />
+        )}
+
         {!active ? (
-          <div className="grid place-items-center rounded-2xl border border-dashed border-border py-20 text-center">
-            <Inbox className="h-8 w-8 text-faint" />
-            <p className="mt-2 text-sm text-muted">No mission yet. Create one to get started.</p>
-          </div>
+          <div className="empty" style={{ padding: "80px 0" }}>No mission yet. Create one to get started.</div>
         ) : (
-          <MissionView key={active.id} mission={active} charters={charters.filter((c) => c.missionId === active.id)} />
+          <MissionView key={active.id} mission={active} charters={charters.filter((c) => c.missionId === active.id)} onNew={() => setShowBuilder((s) => !s)} />
         )}
       </main>
     </>
   );
 }
 
-function MissionView({ mission, charters }: { mission: Mission; charters: ReturnType<typeof useStore>["charters"] }) {
+function MissionView({ mission, charters, onNew }: { mission: Mission; charters: ReturnType<typeof useStore>["charters"]; onNew: () => void }) {
   const { run, running, phase, veniceMeta } = useMissionRunner(mission, charters);
+  const group = phaseGroup(phase);
 
   return (
-    <div className="space-y-6">
-      {/* run bar */}
-      <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border bg-surface/70 p-4">
-        <div>
-          <div className="text-sm font-medium text-ink">{mission.name}</div>
-          <div className="text-xs text-muted">{mission.goal}</div>
+    <>
+      <div className="mc-bar">
+        <div className="m-id">
+          <span className="lbl">Mission</span>
+          <span className="nm">{mission.name}<span className="goal">{mission.goal}</span></span>
         </div>
-        <div className="flex items-center gap-2">
-          {veniceMeta && <Badge tone={veniceMeta.mode === "real" ? "good" : "warn"}><Sparkles className="h-3 w-3" /> Venice: {veniceMeta.model}</Badge>}
-          <Badge tone={phase === "done" ? "good" : phase === "rejected" ? "bad" : running ? "violet" : "neutral"}>{phase}</Badge>
-          <Button onClick={run} disabled={running} size="lg">
-            {running ? <Loader2 className="h-4 w-4 animate-spin" /> : <Play className="h-4 w-4" />}
-            {running ? "Agents working…" : phase === "done" || phase === "rejected" ? "Run again" : "Run mission"}
-          </Button>
+        <div className="spacer" />
+        <div className="badges">
+          {veniceMeta && (
+            <span className="venice-badge">
+              <svg viewBox="0 0 24 24"><path d="M12 3l2.2 5.5L20 9l-4.2 3.6L17 18l-5-3-5 3 1.2-5.4L4 9l5.8-.5L12 3Z" /></svg>
+              Venice · {veniceMeta.model}
+            </span>
+          )}
+          <span className="phase" data-p={group}><span className="pd" />{phase}</span>
+        </div>
+        <div className="acts">
+          <button className="btn btn-ghost" onClick={onNew}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M12 5v14M5 12h14" /></svg>
+            New mission
+          </button>
+          <button className="btn btn-green" onClick={run} disabled={running}>
+            {running ? (
+              <svg className="spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M12 3a9 9 0 1 0 9 9" strokeLinecap="round" /></svg>
+            ) : (
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
+            )}
+            {running ? "Agents working…" : group === "done" || group === "rejected" ? "Run again" : "Run mission"}
+          </button>
         </div>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-2">
-        <div className="space-y-6">
+      <div className="mc-grid">
+        <div className="mc-col">
           <PermissionChain missionId={mission.id} />
           <AgentTeam missionId={mission.id} />
           <Timeline missionId={mission.id} />
         </div>
-        <div className="space-y-6">
+        <div className="mc-col">
           <A2AConsole missionId={mission.id} />
           <FinalReport missionId={mission.id} />
         </div>
       </div>
-    </div>
+    </>
   );
 }
