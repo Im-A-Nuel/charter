@@ -114,6 +114,12 @@ img, svg { display: block; }
 .nav-right { margin-left: auto; display: flex; align-items: center; gap: 14px; }
 .gh { display: flex; align-items: center; gap: 8px; color: var(--ink-2); font-size: 14px; font-weight: 600; }
 .gh svg { width: 18px; height: 18px; }
+.nav-toggle { display: none; width: 40px; height: 38px; flex: 0 0 auto; border-radius: 10px; border: 1px solid var(--line-2); background: var(--panel-2); color: var(--ink); place-items: center; cursor: pointer; }
+.nav-toggle:hover { background: var(--panel-3); }
+.nav-toggle svg { width: 20px; height: 20px; stroke: currentColor; fill: none; }
+.nav-mobile { display: none; flex-direction: column; gap: 2px; padding: 6px 18px 14px; border-top: 1px solid var(--line); }
+.nav-mobile a { padding: 11px 12px; border-radius: 10px; font-size: 15px; font-weight: 600; color: var(--ink-2); }
+.nav-mobile a:hover, .nav-mobile a.active { color: var(--ink); background: var(--panel-2); }
 .btn {
   display: inline-flex; align-items: center; gap: 8px;
   font-weight: 700; font-size: 14px; border-radius: 11px; padding: 9px 16px;
@@ -811,4 +817,47 @@ textarea.inp { resize: vertical; min-height: 74px; line-height: 1.5; }
   .price-grid .ptier.feat-tier { order: -1; }
   .cmp { overflow-x: auto; }
   .cmp-table { min-width: 560px; }
+}
+
+/* ============================================================
+   MOBILE POLISH — applies across every page
+   ============================================================ */
+@media (max-width: 860px) {
+  .nav-links { display: none; }
+  .nav-toggle { display: grid; }
+  .nav-mobile.open { display: flex; }
+  .nav-inner { gap: 12px; }
+}
+@media (max-width: 680px) {
+  .gh { display: none; }
+  .nav-inner { padding: 12px 18px; }
+  .page-head { padding: 44px 0 24px; }
+
+  /* dashboard mission bar stacks vertically */
+  .mc-bar { flex-direction: column; align-items: stretch; gap: 14px; }
+  .mc-bar .spacer { display: none; }
+  .mc-bar .m-id .nm { flex-direction: column; align-items: flex-start; gap: 4px; white-space: normal; font-size: 20px; }
+  .mc-bar .m-id .nm .goal { white-space: normal; }
+  .mc-bar .badges { gap: 7px; }
+  .mc-bar .acts { width: 100%; }
+  .mc-bar .acts .btn { flex: 1; justify-content: center; }
+
+  /* landing trace rows + footer bottom + CTA */
+  .trace .trow { grid-template-columns: 1fr 104px; gap: 10px; }
+  .f-bottom { flex-direction: column; align-items: flex-start; }
+  .f-legal { text-align: left; }
+  .bigcta .row { flex-wrap: wrap; }
+
+  /* hero copy + cmd box */
+  .hero { padding: 40px 0 28px; }
+  .cmd { font-size: 14.5px; padding: 13px 15px; gap: 12px; }
+  .inline-cta { margin: 44px auto; }
+}
+@media (max-width: 460px) {
+  .tabs { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .rep-stats { grid-template-columns: 1fr; }
+  .price-toggle { flex-wrap: wrap; }
+  .a2a { height: 320px; }
+  .hero-node { width: 70px; }
+  .hero-node .lbl { font-size: 11.5px; }
 }
