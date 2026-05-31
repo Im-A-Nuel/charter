@@ -14,8 +14,8 @@ export function BrandMark() {
 }
 
 export function SiteNav() {
-  const pathname = usePathname();
-  const onDash = pathname?.startsWith("/dashboard");
+  const pathname = usePathname() ?? "/";
+  const is = (p: string) => (p === "/" ? pathname === "/" : pathname.startsWith(p));
 
   return (
     <nav className="nav">
@@ -25,13 +25,11 @@ export function SiteNav() {
           charter
         </Link>
         <div className="nav-links">
-          <Link className={onDash ? "" : "active"} href="/">
-            <span className="dot" />Product
-          </Link>
-          <Link href="/#build">Framework</Link>
-          <Link className={onDash ? "active" : ""} href="/dashboard">Mission Control</Link>
-          <Link href="/#observe">Observability</Link>
-          <Link href="/#faq">Docs</Link>
+          <Link className={is("/") ? "active" : ""} href="/"><span className="dot" />Product</Link>
+          <Link className={is("/templates") ? "active" : ""} href="/templates">Templates</Link>
+          <Link className={is("/dashboard") ? "active" : ""} href="/dashboard">Mission Control</Link>
+          <Link className={is("/pricing") ? "active" : ""} href="/pricing">Pricing</Link>
+          <Link className={is("/docs") ? "active" : ""} href="/docs">Docs</Link>
         </div>
         <div className="nav-right">
           <a className="gh" href="https://github.com/Im-A-Nuel/charter" target="_blank" rel="noreferrer">

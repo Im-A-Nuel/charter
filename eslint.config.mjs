@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Local static UI design reference — not part of the app.
+    "charter/**",
   ]),
 ]);
 
