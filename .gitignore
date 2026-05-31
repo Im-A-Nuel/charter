@@ -41,6 +41,9 @@ CLAUDE.md
 AGENTS.md
 git-commit-plan.ps1
 
+# static UI design reference (local only, not part of the app)
+/charter/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
