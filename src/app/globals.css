@@ -158,7 +158,7 @@ h1.hero-h {
   padding: 15px 18px; font-size: 16px; color: var(--ink);
 }
 .cmd .prompt { color: var(--green); }
-.cmd .copy { margin-left: 6px; color: var(--ink-3); cursor: pointer; transition: .15s; }
+.cmd .copy { margin-left: 6px; color: var(--ink-3); cursor: pointer; transition: .15s; background: none; border: none; padding: 0; display: inline-flex; align-items: center; }
 .cmd .copy:hover { color: var(--ink); }
 .cmd .copy svg { width: 16px; height: 16px; }
 .demo-link { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; color: var(--ink-2); font-size: 15px; transition: .15s; white-space: nowrap; }

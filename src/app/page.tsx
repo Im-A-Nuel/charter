@@ -351,13 +351,13 @@ function CopyCmd() {
   return (
     <div className="cmd mono">
       <span><span className="prompt">$</span>&nbsp; {cmd}</span>
-      <span className="copy" title="Copy" onClick={() => { navigator.clipboard?.writeText(cmd); setCopied(true); setTimeout(() => setCopied(false), 1400); }}>
+      <button type="button" className="copy" aria-label="Copy command" title="Copy" onClick={() => { navigator.clipboard?.writeText(cmd); setCopied(true); setTimeout(() => setCopied(false), 1400); }}>
         {copied ? (
           <svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" strokeWidth={2.2}><path d="M5 12l5 5L20 7" /></svg>
         ) : (
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><rect x="9" y="9" width="11" height="11" rx="2" /><path d="M5 15V5a2 2 0 0 1 2-2h10" /></svg>
         )}
-      </span>
+      </button>
     </div>
   );
 }

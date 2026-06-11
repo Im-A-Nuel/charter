@@ -36,6 +36,17 @@ export function useMissionRunner(mission: Mission, charters: AgentCharter[]) {
   const payAgent = charters.find((c) => c.role === "Payment");
 
   async function run() {
+    try {
+      await runFlow();
+    } catch (e) {
+      const reason = (e as Error)?.message ?? "unexpected error";
+      msg("System", "User Wallet", `Mission halted: ${reason}`, "report");
+      store.updateMission(mission.id, { status: "completed" });
+      setPhase("rejected");
+    }
+  }
+
+  async function runFlow() {
     store.clearMissionRuntime(mission.id);
     store.updateMission(mission.id, { status: "active" });
     const real = !!account && correctChain;
