@@ -24,7 +24,7 @@ export default function Pricing() {
 
       <div className="price-toggle">
         <span className={`lab${!yearly ? " on" : ""}`}>Monthly</span>
-        <div className={`ptog${yearly ? " year" : ""}`} onClick={() => setYearly((y) => !y)} />
+        <button type="button" className={`ptog${yearly ? " year" : ""}`} onClick={() => setYearly((y) => !y)} role="switch" aria-checked={yearly} aria-label="Toggle yearly billing" />
         <span className={`lab${yearly ? " on" : ""}`}>Yearly <span className="save">2 months free</span></span>
       </div>
 

@@ -14,11 +14,15 @@ const VENICE_MODEL = process.env.VENICE_MODEL || "llama-3.3-70b";
 type Msg = { role: "system" | "user" | "assistant"; content: string };
 
 export async function POST(req: Request) {
-  const body = (await req.json()) as {
-    messages: Msg[];
-    json?: boolean;
-    temperature?: number;
-  };
+  let body: { messages?: Msg[]; json?: boolean; temperature?: number };
+  try {
+    body = await req.json();
+  } catch {
+    return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
+  }
+  if (!Array.isArray(body.messages)) {
+    return NextResponse.json({ error: "`messages` must be an array" }, { status: 400 });
+  }
   const key = process.env.VENICE_API_KEY;
 
   if (!key) {
