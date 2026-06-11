@@ -4,21 +4,22 @@ import * as React from "react";
 import { useWallet } from "@/lib/wallet";
 import { useStore } from "@/lib/store";
 import { ROLE_LIBRARY, type Mission, type AgentCharter, type Role } from "@/lib/types";
+import type { TemplatePreset } from "@/lib/templates";
 import { ROLE_VIZ } from "@/lib/role-visuals";
 import { uid } from "@/lib/utils";
 
 const ALL_ROLES: Role[] = ["Manager", "Research", "Risk", "Payment", "Writer"];
 
-export function MissionBuilder({ onCreated }: { onCreated?: (id: string) => void }) {
+export function MissionBuilder({ onCreated, preset }: { onCreated?: (id: string) => void; preset?: TemplatePreset }) {
   const { account, correctChain } = useWallet();
   const { createMission } = useStore();
   const onChain = !!account && correctChain;
 
-  const [name, setName] = React.useState("Token Risk Report");
-  const [goal, setGoal] = React.useState("Generate a risk report for a new token. Use paid data if needed.");
-  const [budget, setBudget] = React.useState("5");
+  const [name, setName] = React.useState(preset?.name ?? "Token Risk Report");
+  const [goal, setGoal] = React.useState(preset?.goal ?? "Generate a risk report for a new token. Use paid data if needed.");
+  const [budget, setBudget] = React.useState(preset ? String(preset.budget) : "5");
   const [duration, setDuration] = React.useState("24");
-  const [roles, setRoles] = React.useState<Role[]>(["Manager", "Research", "Risk", "Payment", "Writer"]);
+  const [roles, setRoles] = React.useState<Role[]>(preset?.roles ?? ["Manager", "Research", "Risk", "Payment", "Writer"]);
 
   function toggle(r: Role) {
     if (r === "Manager") return; // manager is mandatory

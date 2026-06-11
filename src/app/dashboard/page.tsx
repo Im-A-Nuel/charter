@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useSearchParams } from "next/navigation";
 import { SiteNav } from "@/components/site-nav";
 import { MissionBuilder } from "@/components/charter/mission-builder";
 import { AgentTeam } from "@/components/charter/agent-team";
@@ -10,6 +11,7 @@ import { A2AConsole } from "@/components/charter/a2a-console";
 import { FinalReport } from "@/components/charter/final-report";
 import { useStore } from "@/lib/store";
 import { useMissionRunner, type Phase } from "@/lib/orchestrator";
+import { TEMPLATE_PRESETS } from "@/lib/templates";
 import type { Mission } from "@/lib/types";
 
 function phaseGroup(phase: Phase): "idle" | "running" | "done" | "rejected" {
@@ -19,14 +21,25 @@ function phaseGroup(phase: Phase): "idle" | "running" | "done" | "rejected" {
   return "running";
 }
 
-export default function Dashboard() {
+export default function DashboardPage() {
+  return (
+    <React.Suspense fallback={<><SiteNav /><main className="mc" /></>}>
+      <Dashboard />
+    </React.Suspense>
+  );
+}
+
+function Dashboard() {
   const { missions, charters, ready } = useStore();
+  const templateId = useSearchParams().get("template") ?? "";
+  const preset = TEMPLATE_PRESETS[templateId];
+
   const [selected, setSelected] = React.useState<string | null>(null);
-  // null = follow default (open when store is ready and empty); boolean = explicit user choice.
+  // null = follow default (open from a template, or when store is ready and empty); boolean = explicit user choice.
   const [builderOverride, setBuilderOverride] = React.useState<boolean | null>(null);
 
   const active = missions.find((m) => m.id === selected) ?? missions[0];
-  const showBuilder = builderOverride ?? (ready && missions.length === 0);
+  const showBuilder = builderOverride ?? (!!preset || (ready && missions.length === 0));
   const toggleBuilder = () => setBuilderOverride(!showBuilder);
 
   return (
@@ -45,7 +58,7 @@ export default function Dashboard() {
         )}
 
         {showBuilder && (
-          <MissionBuilder onCreated={(id) => { setSelected(id); setBuilderOverride(false); }} />
+          <MissionBuilder key={templateId} preset={preset} onCreated={(id) => { setSelected(id); setBuilderOverride(false); }} />
         )}
 
         {!active ? (

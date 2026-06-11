@@ -82,7 +82,7 @@ export default function Templates() {
           {list.map((t) => {
             const c = CATC[t.cat];
             return (
-              <Link key={t.id} className="tcard" href="/dashboard">
+              <Link key={t.id} className="tcard" href={`/dashboard?template=${t.id}`}>
                 <div className="tc-thumb" style={{ background: `linear-gradient(150deg, ${shade(c)}, #06080c)` }}>
                   <div className="tc-ico" style={{ ["--tc" as string]: c }}>
                     <svg viewBox="0 0 24 24" strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round" fill="none">{ICONS[t.ic]}</svg>
