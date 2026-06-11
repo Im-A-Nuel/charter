@@ -6,6 +6,7 @@ import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 
 export default function Landing() {
+  useReveal();
   return (
     <>
       <SiteNav />
@@ -30,16 +31,30 @@ export default function Landing() {
           </div>
 
           <div className="hero-graphic">
-            <div className="hero-orbit"><div className="hero-blob" /></div>
-            <HeroNode color="#5b9dff" glyph={<><circle cx="12" cy="8" r="3.4" /><path d="M5 20c0-3.3 3-6 7-6s7 2.7 7 6" /></>} label="User" top="8%" left="50%" />
-            <HeroNode color="#00e599" glyph={<path d="M12 3c1.3 1.7 2.7 2.3 4.7 2.5-.2 2 .4 3.4 2 4.7-1.6 1.3-2.2 2.7-2 4.7-2 .2-3.4.8-4.7 2.5-1.3-1.7-2.7-2.3-4.7-2.5.2-2-.4-3.4-2-4.7 1.6-1.3 2.2-2.7 2-4.7 2-.2 3.4-.8 4.7-2.5Z" />} label="Manager" top="50%" left="10%" />
-            <HeroNode color="#ffb347" glyph={<><circle cx="12" cy="12" r="8" /><path d="M12 8v8M9.5 10c0-1 1.1-1.6 2.5-1.6S14.5 9 14.5 10" /></>} label="Payment" top="50%" left="90%" />
-            <HeroNode color="#a78bfa" glyph={<><circle cx="11" cy="11" r="6" /><path d="M20 20l-4-4" /></>} label="Research" top="88%" left="32%" />
-            <HeroNode color="#f472b6" glyph={<><path d="M3 17 14 6l4 4L7 21H3v-4Z" /><path d="M14 6l3-3 4 4-3 3" /></>} label="Writer" top="88%" left="68%" />
+            <div className="hero-core" />
+            <div className="hero-orbit-ring" />
+            <div className="hero-orbit-ring two" />
+            <div className="hero-ring">
+              {HERO_NODES.map((n) => {
+                const rad = (n.angle * Math.PI) / 180;
+                const left = 50 + 40 * Math.cos(rad);
+                const top = 50 + 40 * Math.sin(rad);
+                return (
+                  <div key={n.label} className="hero-node" style={{ left: `${left}%`, top: `${top}%` }}>
+                    <div className="hn-c">
+                      <div className="ring" style={{ ["--nc" as string]: n.color }}>
+                        <svg viewBox="0 0 24 24" fill="none" strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round">{n.glyph}</svg>
+                      </div>
+                      <div className="lbl">{n.label}</div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
 
-        <div className="wrap cloud">
+        <div className="wrap cloud reveal">
           <div className="cloud-h">Built on open standards for agentic payments</div>
           <div className="cloud-row">
             <div className="logo-item"><span className="wm mono">ERC-7710</span><span className="rs">Delegation</span></div>
@@ -55,7 +70,7 @@ export default function Landing() {
       {/* ============================ BUILD ============================ */}
       <section className="feat" id="build">
         <div className="wrap">
-          <div className="panel intro-panel">
+          <div className="panel intro-panel reveal">
             <div className="pill"><span className="pd" />Mission Builder</div>
             <div className="intro-art">
               <div className="spec mono" style={{ position: "absolute", left: 0, top: 0, fontFamily: "'JetBrains Mono',monospace", fontSize: 13.5, lineHeight: 2.05, color: "var(--ink-3)" }}>
@@ -71,7 +86,7 @@ export default function Landing() {
 
           <IconTabs />
 
-          <div className="duo">
+          <div className="duo reveal">
             <div className="cardx">
               <div className="code-wrap code mono">
                 <div className="ln"><span className="k">import</span> {"{ Mission }"} <span className="k">from</span> <span className="s">&quot;@charter/core&quot;</span>;</div>
@@ -130,15 +145,15 @@ export default function Landing() {
       {/* ============================ OBSERVE ============================ */}
       <section className="feat" id="observe">
         <div className="wrap">
-          <div className="panel intro-panel" style={{ minHeight: 320 }}>
+          <div className="panel intro-panel reveal" style={{ minHeight: 320 }}>
             <div className="pill"><span className="pd" />Observability</div>
             <h2 className="feat-h">Observe every step</h2>
             <p className="feat-sub">Trace the conversation. Replay the spend. See exactly what your agents did, when, and for how much — until you trust them with production.</p>
           </div>
 
-          <div className="bento">
+          <div className="bento reveal">
             <div className="col">
-              <div className="bcell">
+              <div className="bcell reveal">
                 <h4>A2A Console</h4>
                 <p className="meta">Inter-agent messages, live — instruct, request, approve, execute, report.</p>
                 <div className="chart">
@@ -181,13 +196,13 @@ export default function Landing() {
       {/* ============================ SETTLE ============================ */}
       <section className="feat">
         <div className="wrap">
-          <div className="panel intro-panel" style={{ minHeight: 300 }}>
+          <div className="panel intro-panel reveal" style={{ minHeight: 300 }}>
             <div className="pill"><span className="pd" />Payments</div>
             <h2 className="feat-h">Settle on-chain</h2>
             <p className="feat-sub">Agents pay through x402 and settle on Base. Every transfer is budget-bounded, signed, and visible on the explorer — or run it simulated until you&apos;re ready.</p>
           </div>
 
-          <div className="duo" style={{ marginTop: 24 }}>
+          <div className="duo reveal" style={{ marginTop: 24 }}>
             <div className="cardx">
               <div className="pledger">
                 <div className="pl-top">
@@ -240,7 +255,7 @@ export default function Landing() {
             </div>
           </div>
 
-          <div className="inline-cta">
+          <div className="inline-cta reveal">
             Start your first mission with
             <Link className="ip" href="/dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8}><path d="M4 5h16v14H4zM4 9h16" /></svg>Mission Control</Link>
             inspect the
@@ -249,7 +264,7 @@ export default function Landing() {
             <b>agent mission platform.</b>
           </div>
 
-          <div className="templates">
+          <div className="templates reveal">
             <Template tone="#0b1a14" title="Token Risk Report" meta="Risk-score a token and pay for data only if needed."
               chips={[{ ic: <><circle cx="11" cy="11" r="6" /><path d="M20 20l-4-4" /></>, t: "research" }, { ic: <path d="M12 3l8 3v6c0 4-3 7-8 9-5-2-8-5-8-9V6l8-3Z" />, t: "risk gate" }]} />
             <Template tone="#1a130b" title="Procurement Agent" meta="Source vendors and pay a deposit within budget."
@@ -258,7 +273,7 @@ export default function Landing() {
               chips={[{ ic: <path d="M5 7h14M5 12h14M5 17h9" />, t: "query on-chain" }]} />
           </div>
 
-          <div className="faq" id="faq">
+          <div className="faq reveal" id="faq">
             <div className="faq-h">Frequently asked questions</div>
             <div className="faq-list">
               {FAQS.map((f, i) => <FaqItem key={i} q={f.q} a={f.a} defaultOpen={i === 0} />)}
@@ -285,13 +300,36 @@ export default function Landing() {
 
 /* ---------------------------------------------------------------- helpers */
 
-function HeroNode({ color, glyph, label, top, left }: { color: string; glyph: React.ReactNode; label: string; top: string; left: string }) {
-  return (
-    <div className="hero-node" style={{ ["--nc" as string]: color, top, left }}>
-      <div className="ring"><svg viewBox="0 0 24 24" fill="none" strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round">{glyph}</svg></div>
-      <div className="lbl">{label}</div>
-    </div>
-  );
+const HERO_NODES: { label: string; color: string; angle: number; glyph: React.ReactNode }[] = [
+  { label: "User", color: "#5b9dff", angle: -90, glyph: <><circle cx="12" cy="8" r="3.4" /><path d="M5 20c0-3.3 3-6 7-6s7 2.7 7 6" /></> },
+  { label: "Payment", color: "#ffb347", angle: -18, glyph: <><circle cx="12" cy="12" r="8" /><path d="M12 8v8M9.5 10c0-1 1.1-1.6 2.5-1.6S14.5 9 14.5 10" /></> },
+  { label: "Writer", color: "#f472b6", angle: 54, glyph: <><path d="M3 17 14 6l4 4L7 21H3v-4Z" /><path d="M14 6l3-3 4 4-3 3" /></> },
+  { label: "Research", color: "#a78bfa", angle: 126, glyph: <><circle cx="11" cy="11" r="6" /><path d="M20 20l-4-4" /></> },
+  { label: "Manager", color: "#00e599", angle: 198, glyph: <path d="M12 3c1.3 1.7 2.7 2.3 4.7 2.5-.2 2 .4 3.4 2 4.7-1.6 1.3-2.2 2.7-2 4.7-2 .2-3.4.8-4.7 2.5-1.3-1.7-2.7-2.3-4.7-2.5.2-2-.4-3.4-2-4.7 1.6-1.3 2.2-2.7 2-4.7 2-.2 3.4-.8 4.7-2.5Z" /> },
+];
+
+/** Scroll-reveal: add `.in` to every `.reveal` when it enters the viewport. */
+function useReveal() {
+  React.useEffect(() => {
+    const els = Array.from(document.querySelectorAll<HTMLElement>(".reveal"));
+    if (!("IntersectionObserver" in window)) {
+      els.forEach((el) => el.classList.add("in"));
+      return;
+    }
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add("in");
+            obs.unobserve(e.target);
+          }
+        });
+      },
+      { rootMargin: "0px 0px -12% 0px", threshold: 0.12 }
+    );
+    els.forEach((el) => obs.observe(el));
+    return () => obs.disconnect();
+  }, []);
 }
 
 function CopyCmd() {
