@@ -31,7 +31,20 @@ export default function Landing() {
           </div>
 
           <div className="hero-graphic">
-            <div className="hero-core" />
+            <div className="hero-core">
+              <svg viewBox="0 0 32 32" fill="none" aria-hidden>
+                <defs>
+                  <radialGradient id="coreGrad" cx="38%" cy="30%" r="75%">
+                    <stop offset="0" stopColor="#f2fffb" />
+                    <stop offset="0.28" stopColor="#9af5d6" />
+                    <stop offset="0.6" stopColor="#00e599" />
+                    <stop offset="1" stopColor="#0a7c57" />
+                  </radialGradient>
+                </defs>
+                <path d="M16 2.5c2.6 3.4 5.4 4.6 9.4 5-0.4 4 0.8 6.8 4.1 9.4-3.3 2.6-4.5 5.4-4.1 9.4-4 0.4-6.8 1.6-9.4 5-2.6-3.4-5.4-4.6-9.4-5 .4-4-0.8-6.8-4.1-9.4 3.3-2.6 4.5-5.4 4.1-9.4 4-.4 6.8-1.6 9.4-5Z" fill="url(#coreGrad)" />
+                <circle cx="16" cy="16.9" r="3.4" fill="#04130d" />
+              </svg>
+            </div>
             <div className="hero-orbit-ring" />
             <div className="hero-orbit-ring two" />
             <div className="hero-ring">
