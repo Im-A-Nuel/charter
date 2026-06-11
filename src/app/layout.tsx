@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Providers } from "@/components/providers";
+import { SITE_URL } from "@/lib/site";
 
 const DESCRIPTION =
   "Charter is the mission-control framework for AI agents that delegate permission and pay on-chain — every action scoped, signed, and auditable via redelegated ERC-7710 permissions.";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://charter.local"),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "Charter — Missions with accountable agents",
     template: "%s · Charter",
