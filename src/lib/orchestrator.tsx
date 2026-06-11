@@ -34,7 +34,6 @@ export function useMissionRunner(mission: Mission, charters: AgentCharter[]) {
   const block = (id: string, detail?: string) => store.patchTimeline(id, { status: "blocked", ...(detail ? { detail } : {}) });
 
   const payAgent = charters.find((c) => c.role === "Payment");
-  const riskAgent = charters.find((c) => c.role === "Risk");
 
   async function run() {
     store.clearMissionRuntime(mission.id);

@@ -35,6 +35,7 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
 
   React.useEffect(() => {
     const p = getInjected();
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- detect injected wallet (external system) after mount
     setHasWallet(!!p);
     if (!p) return;
     p.request({ method: "eth_chainId" }).then((c) => setChainId(parseInt(c as string, 16))).catch(() => {});

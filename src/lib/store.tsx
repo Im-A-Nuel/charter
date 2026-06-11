@@ -48,6 +48,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       const raw = localStorage.getItem(KEY);
       if (raw) {
         const p = JSON.parse(raw);
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- hydrate store from localStorage (external system) after mount
         setMissions(p.missions ?? []); setCharters(p.charters ?? []); setLinks(p.links ?? []);
         setMessages(p.messages ?? []); setTimeline(p.timeline ?? []); setReports(p.reports ?? []);
       }

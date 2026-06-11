@@ -22,13 +22,12 @@ function phaseGroup(phase: Phase): "idle" | "running" | "done" | "rejected" {
 export default function Dashboard() {
   const { missions, charters, ready } = useStore();
   const [selected, setSelected] = React.useState<string | null>(null);
-  const [showBuilder, setShowBuilder] = React.useState(false);
+  // null = follow default (open when store is ready and empty); boolean = explicit user choice.
+  const [builderOverride, setBuilderOverride] = React.useState<boolean | null>(null);
 
   const active = missions.find((m) => m.id === selected) ?? missions[0];
-
-  React.useEffect(() => {
-    if (ready && missions.length === 0) setShowBuilder(true);
-  }, [ready, missions.length]);
+  const showBuilder = builderOverride ?? (ready && missions.length === 0);
+  const toggleBuilder = () => setBuilderOverride(!showBuilder);
 
   return (
     <>
@@ -41,18 +40,18 @@ export default function Dashboard() {
                 {m.name} · {m.budget} USDC
               </button>
             ))}
-            <button className="mtab" onClick={() => setShowBuilder((s) => !s)}>+ New mission</button>
+            <button className="mtab" onClick={toggleBuilder}>+ New mission</button>
           </div>
         )}
 
         {showBuilder && (
-          <MissionBuilder onCreated={(id) => { setSelected(id); setShowBuilder(false); }} />
+          <MissionBuilder onCreated={(id) => { setSelected(id); setBuilderOverride(false); }} />
         )}
 
         {!active ? (
           <div className="empty" style={{ padding: "80px 0" }}>No mission yet. Create one to get started.</div>
         ) : (
-          <MissionView key={active.id} mission={active} charters={charters.filter((c) => c.missionId === active.id)} onNew={() => setShowBuilder((s) => !s)} />
+          <MissionView key={active.id} mission={active} charters={charters.filter((c) => c.missionId === active.id)} onNew={toggleBuilder} />
         )}
       </main>
     </>
