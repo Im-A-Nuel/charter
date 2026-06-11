@@ -1,11 +1,13 @@
-# Charter — Redelegated Authority for Coordinated Agent Teams
+# Charter — Missions with accountable agents
 
-> Define the authority of every agent.
+> The mission-control framework for AI agents that delegate permission and pay on-chain.
 
-Charter is a multi-agent coordination layer. A **Manager Agent** receives authority from the user and
-then **redelegates** smaller, scoped **ERC-7710** permissions to specialist agents — so every agent
-acts under a charter and only ever holds the authority its role requires. The chain of authority is
-visible and auditable.
+Charter is a multi-agent coordination layer. You describe a mission goal and a budget; a **Manager
+Agent** receives authority from the user and then **redelegates** smaller, scoped **ERC-7710**
+permissions to specialist agents — so every agent acts under a charter and only ever holds the
+authority its role requires. Every action is scoped, signed, and auditable.
+
+**Pages:** landing · Mission Control (dashboard) · Templates · Pricing · Docs.
 
 **Tracks:** Best A2A Coordination · Best Agent · Best use of Venice AI · x402 + ERC-7710
 
