@@ -430,7 +430,8 @@ section.feat { padding: 34px 0; }
 .footer-shell { position: relative; border-radius: 36px 36px 0 0; overflow: hidden; border: 1px solid var(--line); border-bottom: none; background: var(--bg-soft); }
 .footer-glow { position: absolute; inset: 0; z-index: 0; pointer-events: none; background: radial-gradient(60% 80% at 0% 100%, rgba(167, 139, 250, .22), transparent 70%), radial-gradient(60% 80% at 100% 100%, rgba(91, 157, 255, .22), transparent 70%); }
 .footer-inner { position: relative; z-index: 1; padding: 56px 48px 40px; }
-.f-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 40px; flex-wrap: wrap; padding-bottom: 48px; }
+.f-top { display: flex; justify-content: space-between; align-items: center; gap: 40px; flex-wrap: wrap; padding-bottom: 48px; }
+.f-tagline { max-width: 360px; color: var(--ink-3); font-size: 14px; line-height: 1.5; margin: 0; }
 .f-news { max-width: 420px; }
 .f-news .nh { font-family: var(--font-mono-f), monospace; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--violet); display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
 .f-news .nh .pd { width: 7px; height: 7px; border-radius: 50%; background: var(--violet); }

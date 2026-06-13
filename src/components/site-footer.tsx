@@ -12,13 +12,7 @@ export function SiteFooter() {
           <div className="footer-inner">
             <div className="f-top">
               <Link className="brand" href="/"><BrandMark />charter</Link>
-              <div className="f-news">
-                <div className="nh"><span className="pd" />Get weekly updates</div>
-                <form className="sub-form" onSubmit={(e) => e.preventDefault()}>
-                  <input type="email" placeholder="you@company.com" aria-label="Email" />
-                  <button className="btn btn-light" type="submit">Subscribe</button>
-                </form>
-              </div>
+              <p className="f-tagline">Missions with accountable agents — scoped, signed, on-chain.</p>
             </div>
             <div className="f-cols">
               <div className="f-col"><h5>Framework</h5><Link href="/docs#missions">Missions</Link><Link href="/docs#permission-chain">Permission Chain</Link><Link href="/docs#agent-team">Agent Team</Link><Link href="/docs#payments">Payments</Link></div>
