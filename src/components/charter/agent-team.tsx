@@ -4,9 +4,39 @@ import { useStore } from "@/lib/store";
 import { ROLE_VIZ, Glyph } from "@/lib/role-visuals";
 import type { AgentCharter } from "@/lib/types";
 
+const HUB_W = 200;
+const HUB_H = 82;
+const SUB_D = 58;
+const VGAP = 66;
+const COL = 130;
+const PAD = 22;
+
+function capOf(c: AgentCharter): string {
+  if (c.canSpend) return `spend ≤ ${c.budget} USDC`;
+  if (c.canApprove) return "approve / reject";
+  if (c.canRedelegate) return "redelegates";
+  if (c.role === "Research") return "read-only";
+  if (c.role === "Writer") return "report only";
+  return "scoped";
+}
+
 export function AgentTeam({ missionId }: { missionId: string }) {
   const { charters } = useStore();
   const rows = charters.filter((c) => c.missionId === missionId);
+  const manager = rows.find((c) => c.role === "Manager");
+  const specialists = rows.filter((c) => c.role !== "Manager");
+  const n = specialists.length;
+
+  const contentW = Math.max(HUB_W, n * COL);
+  const W = contentW + PAD * 2;
+  const hubX = PAD + (contentW - HUB_W) / 2;
+  const hubBottom = PAD + HUB_H;
+  const subTop = hubBottom + VGAP;
+  const rowLeft = PAD + (contentW - n * COL) / 2;
+  const subCx = (i: number) => rowLeft + i * COL + COL / 2;
+  const ox = (i: number) => hubX + (HUB_W * (i + 1)) / (n + 1);
+  const H = subTop + SUB_D + 44 + PAD;
+  const mgrViz = ROLE_VIZ.Manager;
 
   return (
     <section className="dpanel">
@@ -18,48 +48,49 @@ export function AgentTeam({ missionId }: { missionId: string }) {
         <span className="sub">{rows.length} agents</span>
       </div>
       <div className="dp-b">
-        {rows.length === 0 ? (
+        {rows.length === 0 || !manager ? (
           <div className="empty">No charters yet.</div>
         ) : (
-          <div className="team">
-            {rows.map((c) => <Agent key={c.id} charter={c} />)}
+          <div className="flow team-flow">
+            <div className="flow-canvas" style={{ width: W, height: H }}>
+              <svg className="flow-edges" width={W} height={H} viewBox={`0 0 ${W} ${H}`} fill="none">
+                {specialists.map((_, i) => {
+                  const x1 = ox(i), x2 = subCx(i);
+                  const d = `M ${x1} ${hubBottom} C ${x1} ${hubBottom + VGAP * 0.6}, ${x2} ${subTop - VGAP * 0.6}, ${x2} ${subTop}`;
+                  return (
+                    <g key={i}>
+                      <path d={d} className="te-link" />
+                      <rect className="te-diamond" x={x1 - 4} y={hubBottom - 4} width="8" height="8" transform={`rotate(45 ${x1} ${hubBottom})`} />
+                      <rect className="te-diamond" x={x2 - 4} y={subTop - 4} width="8" height="8" transform={`rotate(45 ${x2} ${subTop})`} />
+                    </g>
+                  );
+                })}
+              </svg>
+
+              {/* hub: Manager */}
+              <div className="hub signed" style={{ left: hubX, top: PAD, width: HUB_W, height: HUB_H, ["--nc" as string]: mgrViz.color }}>
+                <span className="fn-ic"><Glyph name={mgrViz.glyph} /></span>
+                <div className="hub-meat">
+                  <div className="hub-tt">{manager.agent.replace(/ Agent$/, "")}<span className="hub-tag">coordinator</span></div>
+                  <div className="hub-cap">{manager.description}</div>
+                </div>
+              </div>
+
+              {/* sub-nodes: specialists */}
+              {specialists.map((c, i) => {
+                const viz = ROLE_VIZ[c.role] ?? ROLE_VIZ.Research;
+                return (
+                  <div key={c.id} className="sub" style={{ left: rowLeft + i * COL, top: subTop, width: COL, ["--nc" as string]: viz.color }}>
+                    <span className="sub-ic"><Glyph name={viz.glyph} /></span>
+                    <div className="sub-nm">{c.agent.replace(/ Agent$/, "")}</div>
+                    <span className="sub-cap">{capOf(c)}</span>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         )}
       </div>
     </section>
-  );
-}
-
-function Agent({ charter: c }: { charter: AgentCharter }) {
-  const viz = ROLE_VIZ[c.role] ?? ROLE_VIZ.Research;
-  return (
-    <div className="agent" style={{ ["--ac" as string]: viz.color }}>
-      <div className="av"><Glyph name={viz.glyph} /></div>
-      <div className="info">
-        <div className="nm">
-          {c.agent}
-          {c.role === "Manager" && <span className="badge green" style={{ padding: "1px 6px", fontSize: 9 }}>coordinator</span>}
-        </div>
-        <div className="rl">{c.description}</div>
-        <div className="caps">
-          <Cap on={c.canSpend} label={c.canSpend ? `spend ≤ ${c.budget} USDC` : "no spend"} />
-          <Cap on={c.canApprove} label="approve" />
-          <Cap on={c.canRedelegate} label="redelegate" />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function Cap({ on, label }: { on: boolean; label: string }) {
-  return (
-    <span className={`cap-chip${on ? " on" : ""}`}>
-      {on ? (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4}><path d="M5 12l5 5L20 7" /></svg>
-      ) : (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M6 6l12 12M18 6L6 18" /></svg>
-      )}
-      {label}
-    </span>
   );
 }
