@@ -25,7 +25,7 @@ export function FinalReport({ missionId }: { missionId: string }) {
             <div className="s">A Venice-written summary appears when the mission completes.</div>
           </div>
         ) : (
-          <div>
+          <div className="rep-body">
             <div className={`rep-verdict${report.riskLevel === "Low" ? "" : " warn"}`}>
               <div className="rico">
                 <svg viewBox="0 0 24 24" fill="none" strokeWidth={1.8}><path d="M9 12l2 2 4-4M5 7l7-4 7 4v6c0 4-3 7-7 8-4-1-7-4-7-8V7Z" /></svg>

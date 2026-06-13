@@ -24,14 +24,17 @@ export function Timeline({ missionId }: { missionId: string }) {
           <div className="empty">No steps yet. Run the mission.</div>
         ) : (
           <div className="tl">
-            {rows.map((s) => (
+            {rows.map((s, i) => (
               <div key={s.id} className={`tstep ${stateClass[s.status] ?? ""}`}>
-                <div className="dot"><i /></div>
-                <div className="lab">
-                  <span className="lt">{s.label}</span>
-                  {s.detail && <span className="ld">{s.detail}</span>}
+                <div className="t-rail">
+                  <span className="t-dot"><i /></span>
+                  {i < rows.length - 1 && <span className="t-line" />}
                 </div>
-                <div className="ms">{stateLabel[s.status]}</div>
+                <div className="t-body">
+                  <div className="t-lab">{s.label}</div>
+                  {s.detail && <div className="t-det">{s.detail}</div>}
+                </div>
+                <span className="t-state">{stateLabel[s.status]}</span>
               </div>
             ))}
           </div>
