@@ -79,16 +79,16 @@ export default function Docs() {
 
             <section id="quickstart">
               <h3 className="sec-h"><span className="n">1</span>Quickstart</h3>
-              <p>Scaffold a new Charter project with a single command. It installs the SDK, sets up a wallet connector for Base, and drops in a starter mission.</p>
-              <CodeBlock fn="terminal" copy="npm create charter@latest">
-                <span className="cl"><span className="c"># scaffold a new mission workspace</span></span>
-                <span className="cl"><span className="f">npm</span> create charter@latest</span>
+              <p>Clone the Charter workspace and run the dev console. It ships Mission Control, the API routes, and a starter mission — pointed at a simulated chain so nothing costs real funds.</p>
+              <CodeBlock fn="terminal" copy="npx degit Im-A-Nuel/charter charter && cd charter && npm install && npm run dev">
+                <span className="cl"><span className="c"># scaffold the Charter workspace</span></span>
+                <span className="cl"><span className="f">npx</span> degit Im-A-Nuel/charter charter</span>
                 <span className="cl">{" "}</span>
                 <span className="cl"><span className="c"># install &amp; run the dev console</span></span>
-                <span className="cl"><span className="f">cd</span> my-missions &amp;&amp; npm install</span>
+                <span className="cl"><span className="f">cd</span> charter &amp;&amp; npm install</span>
                 <span className="cl"><span className="f">npm</span> run dev</span>
               </CodeBlock>
-              <p>Open <code>localhost:3000</code> and you&apos;ll land in a local copy of Mission Control, pointed at a simulated chain so nothing costs real funds.</p>
+              <p>Open <code>localhost:3000</code> and you&apos;ll land in Mission Control, pointed at a simulated chain so nothing costs real funds.</p>
             </section>
 
             <section id="first-mission">

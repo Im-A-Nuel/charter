@@ -347,7 +347,7 @@ function useReveal() {
 
 function CopyCmd() {
   const [copied, setCopied] = React.useState(false);
-  const cmd = "npm create charter@latest";
+  const cmd = "npx degit Im-A-Nuel/charter";
   return (
     <div className="cmd mono">
       <span><span className="prompt">$</span>&nbsp; {cmd}</span>
