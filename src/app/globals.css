@@ -618,22 +618,30 @@ a.wf-addr:hover { color: var(--blue); text-decoration: underline; }
 .tstep.done .lab .lt, .tstep.run .lab .lt { color: var(--ink); }
 .tstep .ms { font-size: 10.5px; color: var(--ink-4); font-family: var(--font-mono-f), monospace; white-space: nowrap; padding-top: 2px; }
 
-/* A2A CONSOLE */
-.a2a { height: 368px; display: flex; flex-direction: column; }
-.a2a .stream { flex: 1; overflow-y: auto; overflow-x: hidden; display: flex; flex-direction: column; gap: 12px; padding-right: 6px; }
-.a2a .stream::-webkit-scrollbar { width: 6px; }
-.a2a .stream::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 3px; }
-.msg { display: flex; gap: 11px; }
-.msg .mav { width: 30px; height: 30px; border-radius: 9px; display: grid; place-items: center; flex: 0 0 auto; border: 1.3px solid var(--mc2); background: radial-gradient(circle at 50% 30%, rgba(255, 255, 255, .05), transparent); }
-.msg .mav svg { width: 16px; height: 16px; stroke: var(--mc2); fill: none; }
-.msg .mb { flex: 1; min-width: 0; }
-.msg .mhead { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 4px; }
-.msg .from { font-size: 12.5px; font-weight: 700; }
-.msg .arr { color: var(--ink-4); font-size: 12px; }
-.msg .to { font-size: 12.5px; font-weight: 600; color: var(--ink-3); }
-.msg .kind { font-size: 10px; font-weight: 700; font-family: var(--font-mono-f), monospace; text-transform: uppercase; letter-spacing: .05em; border-radius: 5px; padding: 2px 6px; border: 1px solid var(--kc, var(--line-2)); color: var(--kc, var(--ink-3)); }
-.msg .text { font-size: 13.5px; color: var(--ink-2); line-height: 1.5; background: var(--bg-soft); border: 1px solid var(--line); border-radius: 10px; border-top-left-radius: 3px; padding: 9px 12px; overflow-wrap: anywhere; }
-.msg .text .hx { font-family: var(--font-mono-f), monospace; color: var(--green); font-size: 12.5px; }
+/* A2A CONSOLE — threaded chat with neon avatars */
+.a2a { height: 430px; display: flex; flex-direction: column; }
+.a2a .stream { flex: 1; overflow-y: auto; overflow-x: hidden; display: flex; flex-direction: column; padding-right: 8px; }
+.a2a .stream::-webkit-scrollbar { width: 7px; }
+.a2a .stream::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 4px; }
+.msg { display: flex; gap: 16px; }
+.m-rail { display: flex; flex-direction: column; align-items: center; flex: 0 0 auto; }
+.msg .mav {
+  width: 50px; height: 50px; border-radius: 14px; display: grid; place-items: center; flex: 0 0 auto;
+  border: 1.6px solid var(--mc2);
+  background: radial-gradient(circle at 50% 30%, color-mix(in srgb, var(--mc2) 18%, transparent), transparent 70%);
+  box-shadow: 0 0 20px -5px var(--mc2), inset 0 1px 0 rgba(255, 255, 255, .05);
+}
+.msg .mav svg { width: 22px; height: 22px; stroke: var(--mc2); fill: none; }
+.mline { width: 2px; flex: 1; min-height: 16px; margin: 9px 0; background: repeating-linear-gradient(180deg, var(--line-3) 0 3px, transparent 3px 8px); }
+.msg .mb { flex: 1; min-width: 0; padding-bottom: 26px; }
+.msg:last-child .mb { padding-bottom: 6px; }
+.msg .mhead { display: flex; align-items: center; gap: 11px; flex-wrap: wrap; margin-bottom: 11px; padding-top: 4px; }
+.msg .from { font-size: 14.5px; font-weight: 800; letter-spacing: -.01em; }
+.msg .arr { color: var(--ink-4); font-size: 14px; }
+.msg .to { font-size: 14px; font-weight: 600; color: var(--ink-3); }
+.msg .kind { font-size: 10px; font-weight: 700; font-family: var(--font-mono-f), monospace; text-transform: uppercase; letter-spacing: .07em; border-radius: 8px; padding: 4px 10px; border: 1.5px solid var(--kc, var(--line-2)); color: var(--kc, var(--ink-3)); background: color-mix(in srgb, var(--kc) 9%, transparent); }
+.msg .text { font-size: 14px; color: var(--ink-2); line-height: 1.58; background: rgba(255, 255, 255, .02); border: 1px solid var(--line-2); border-radius: 13px; padding: 13px 16px; overflow-wrap: anywhere; }
+.msg .text .hx { font-family: var(--font-mono-f), monospace; color: var(--green); font-size: 13px; }
 
 /* FINAL REPORT */
 .report .locked { text-align: center; padding: 30px 10px; color: var(--ink-4); }

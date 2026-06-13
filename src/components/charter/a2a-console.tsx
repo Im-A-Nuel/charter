@@ -38,11 +38,14 @@ export function A2AConsole({ missionId }: { missionId: string }) {
             {rows.length === 0 ? (
               <div className="empty">No inter-agent traffic yet. Run the mission to watch agents coordinate.</div>
             ) : (
-              rows.map((m) => {
+              rows.map((m, i) => {
                 const viz = vizFor(m.from);
                 return (
                   <div key={m.id} className="msg" style={{ ["--mc2" as string]: viz.color, ["--kc" as string]: KC[m.kind] }}>
-                    <div className="mav"><Glyph name={viz.glyph} /></div>
+                    <div className="m-rail">
+                      <div className="mav"><Glyph name={viz.glyph} size={22} /></div>
+                      {i < rows.length - 1 && <div className="mline" />}
+                    </div>
                     <div className="mb">
                       <div className="mhead">
                         <span className="from" style={{ color: viz.color }}>{m.from}</span>
