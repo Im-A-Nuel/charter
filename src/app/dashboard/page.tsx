@@ -49,7 +49,7 @@ function Dashboard() {
         {missions.length > 0 && (
           <div className="mtabs">
             {missions.map((m) => (
-              <button key={m.id} onClick={() => setSelected(m.id)} className={`mtab${active?.id === m.id ? " on" : ""}`}>
+              <button key={m.id} onClick={() => setSelected(m.id)} className={`mtab${active?.id === m.id ? " on" : ""}`} aria-current={active?.id === m.id ? "true" : undefined}>
                 {m.name} · {m.budget} USDC
               </button>
             ))}

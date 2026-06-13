@@ -5,13 +5,18 @@ import { shortAddr } from "@/lib/utils";
 import { CHAIN } from "@/lib/chain";
 
 export function WalletButton() {
-  const { account, connecting, hasWallet, correctChain, connect, switchChain, disconnect } = useWallet();
+  const { account, connecting, hasWallet, correctChain, connect, switchChain, disconnect, error } = useWallet();
 
   if (!account) {
     return (
-      <button className="wallet" onClick={connect} disabled={connecting}>
+      <button
+        className={`wallet${error ? " warn" : ""}`}
+        onClick={connect}
+        disabled={connecting}
+        title={error || undefined}
+      >
         <span className="wd" />
-        {connecting ? "Connecting…" : hasWallet ? "Connect wallet" : "Install MetaMask"}
+        {connecting ? "Connecting…" : error ? "Retry connect" : hasWallet ? "Connect wallet" : "Install MetaMask"}
       </button>
     );
   }

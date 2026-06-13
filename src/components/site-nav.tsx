@@ -36,7 +36,7 @@ export function SiteNav() {
         </Link>
         <div className="nav-links">
           {LINKS.map((l) => (
-            <Link key={l.href} className={is(l.href) ? "active" : ""} href={l.href}>
+            <Link key={l.href} className={is(l.href) ? "active" : ""} href={l.href} aria-current={is(l.href) ? "page" : undefined}>
               {l.dot && <span className="dot" />}{l.label}
             </Link>
           ))}
@@ -58,7 +58,7 @@ export function SiteNav() {
 
       <div className={`nav-mobile${open ? " open" : ""}`}>
         {LINKS.map((l) => (
-          <Link key={l.href} className={is(l.href) ? "active" : ""} href={l.href} onClick={() => setOpen(false)}>
+          <Link key={l.href} className={is(l.href) ? "active" : ""} href={l.href} onClick={() => setOpen(false)} aria-current={is(l.href) ? "page" : undefined}>
             {l.label}
           </Link>
         ))}
