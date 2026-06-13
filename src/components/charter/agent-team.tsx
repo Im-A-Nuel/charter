@@ -4,8 +4,8 @@ import { useStore } from "@/lib/store";
 import { ROLE_VIZ, Glyph } from "@/lib/role-visuals";
 import type { AgentCharter } from "@/lib/types";
 
-const HUB_W = 200;
-const HUB_H = 82;
+const HUB_W = 216;
+const HUB_H = 80;
 const SUB_D = 58;
 const VGAP = 66;
 const COL = 130;
@@ -69,10 +69,10 @@ export function AgentTeam({ missionId }: { missionId: string }) {
 
               {/* hub: Manager */}
               <div className="hub signed" style={{ left: hubX, top: PAD, width: HUB_W, height: HUB_H, ["--nc" as string]: mgrViz.color }}>
-                <span className="fn-ic"><Glyph name={mgrViz.glyph} /></span>
+                <span className="fn-ic"><Glyph name={mgrViz.glyph} size={20} /></span>
                 <div className="hub-meat">
                   <div className="hub-tt">{manager.agent.replace(/ Agent$/, "")}<span className="hub-tag">coordinator</span></div>
-                  <div className="hub-cap">{manager.description}</div>
+                  <div className="hub-cap">redelegates scoped authority</div>
                 </div>
               </div>
 
@@ -81,7 +81,7 @@ export function AgentTeam({ missionId }: { missionId: string }) {
                 const viz = ROLE_VIZ[c.role] ?? ROLE_VIZ.Research;
                 return (
                   <div key={c.id} className="sub" style={{ left: rowLeft + i * COL, top: subTop, width: COL, ["--nc" as string]: viz.color }}>
-                    <span className="sub-ic"><Glyph name={viz.glyph} /></span>
+                    <span className="sub-ic"><Glyph name={viz.glyph} size={24} /></span>
                     <div className="sub-nm">{c.agent.replace(/ Agent$/, "")}</div>
                     <span className="sub-cap">{capOf(c)}</span>
                   </div>

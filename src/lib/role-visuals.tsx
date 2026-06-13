@@ -37,9 +37,9 @@ const PATHS: Record<string, React.ReactNode> = {
   ),
 };
 
-export function Glyph({ name }: { name: string }) {
+export function Glyph({ name, size = 20 }: { name: string; size?: number }) {
   return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round">
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round">
       {PATHS[name] ?? PATHS.search}
     </svg>
   );
